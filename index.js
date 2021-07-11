@@ -2,7 +2,7 @@ const Discord = require('discord.js')
 const client = new Discord.Client();
 const WOKCommands = require('wokcommands');
 const mongo = require('./mongo.js')
-const sendConnectionLog = require('./onStart/connection.js')
+const sendConnectionLog = require("./onStart/sendConnectionLog.js");
 require('dotenv').config()
 
 exports.client = client;
