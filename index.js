@@ -1,6 +1,7 @@
 const Discord = require('discord.js') 
 const client = new Discord.Client();
 const WOKCommands = require('wokcommands');
+require('dotenv').config()
 // Hopefully REPL Stuff
 const express = require('express');
 const app = express();
@@ -22,5 +23,5 @@ client.on('ready', async () => {
     new WOKCommands(client, {
         commandsDir: 'commands',
         featureDir: 'features'
-    }).setDefaultPrefix('$')
+    }).setDefaultPrefix('$').setMongoPath(process.env.mongoPath)
 })
