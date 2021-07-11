@@ -27,14 +27,14 @@ module.exports = {
           .setTitle("Mute")
           .setDescription(`${message.author.username} has muted ${message.mentions.users.first()}`)
           .setColor("0099ff")
-          .setFooter(`Lounge Utilities v${botVersion}`)
+          .setFooter(`Shielded v${botVersion}`)
         message.channel.send(muteEmbed)
         }else{
             const muteEmbed = new Discord.MessageEmbed()
           .setTitle("Mute")
           .setDescription(`${message.author.username} has muted ${message.mentions.users.first()}`)
           .setColor("0099ff")
-          .setFooter(`Imagine getting muted`)
+          .setFooter(`Shielded v${botVersion}`)
           .addField("Reason", reason)
         message.channel.send(muteEmbed)
         }

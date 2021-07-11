@@ -34,7 +34,7 @@ module.exports = {
           .setTitle("Temporary Mute")
           .setDescription(`${message.author.username} has temporarily muted ${message.mentions.users.first()}`)
           .setColor("0099ff")
-          .setFooter(``)
+          .setFooter(`Shielded v${botVersion}`)
           .addField("Duration", ms(time, { long: true }))
         message.channel.send(muteEmbed)
         }else{
@@ -42,7 +42,7 @@ module.exports = {
           .setTitle("Temporary Mute")
           .setDescription(`${message.author.username} has temporarily muted ${message.mentions.users.first()}`)
           .setColor("0099ff")
-          .setFooter(``)
+          .setFooter(`Shielded v${botVersion}`)
           .addField("Duration", ms(time, { long: true }))
           .addField("Reason", reason)
         message.channel.send(muteEmbed)

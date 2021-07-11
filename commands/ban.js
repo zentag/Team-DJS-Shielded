@@ -31,7 +31,7 @@ module.exports = {
                 .setTitle("Ban")
                 .setDescription(`${message.author.username} has banned ${message.mentions.users.first()}`)
                 .setColor("0099ff")
-                .setFooter(`Poggers`)
+                .setFooter(`Shielded v${botVersion}`)
             message.channel.send(banEmbed)
         }
         else{
@@ -40,7 +40,7 @@ module.exports = {
                 .setTitle("Ban")
                 .setDescription(`${message.author.username} has banned ${message.mentions.users.first()}`)
                 .setColor("0099ff")
-                .setFooter(`LOL`)
+                .setFooter(`Shielded v${botVersion}`)
                 .addField("Reason", reason)
             message.channel.send(banEmbed)
         }

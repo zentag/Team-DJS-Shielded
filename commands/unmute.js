@@ -19,7 +19,7 @@ module.exports = {
           .setTitle("Unmute")
           .setDescription(`${message.author.username} has unmuted ${message.mentions.users.first()}`)
           .setColor("0099ff")
-          .setFooter(`Nice`)
+          .setFooter(`Shielded v${botVersion}`)
         message.channel.send(muteEmbed)
     } catch(e) {
         console.log(e)

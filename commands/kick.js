@@ -33,7 +33,7 @@ module.exports = {
                 .setTitle("Kick")
                 .setDescription(`${message.author.username} has kicked ${message.mentions.users.first()}`)
                 .setColor("0099ff")
-                .setFooter(`Lounge Utilities v${botVersion}`)
+                .setFooter(`Shielded v${botVersion}`)
             message.channel.send(kickEmbed)
         }
         else{
@@ -42,7 +42,7 @@ module.exports = {
                 .setTitle("Kick")
                 .setDescription(`${message.author.username} has kicked ${message.mentions.users.first()}`)
                 .setColor("0099ff")
-                .setFooter(`L`)
+                .setFooter(`Shielded v${botVersion}`)
                 .addField("Reason", reason)
             message.channel.send(kickEmbed)
         }
