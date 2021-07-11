@@ -6,7 +6,6 @@ module.exports = {
     maxArgs: -1,
     permissions: ['KICK_MEMBERS'],
     callback: ({ message, client }) => {
-        try {
         const args = message.content.split(" ")
         const mutedRole = message.guild.roles.cache.find(
             (role) => role.name === 'Muted'
@@ -46,16 +45,19 @@ module.exports = {
           .addField("Duration", ms(time, { long: true }))
           .addField("Reason", reason)
         message.channel.send(muteEmbed)
-        }
-    } catch(e) {
-        console.log(e)
+       
+    }
+    },
+    error: ({ error, command, info, message }) => {
+        const { client } = require('../index.js')
+        console.log(info)
         const errors = client.channels.cache.get("863631274001563651");
         const errorEmbed = new Discord.MessageEmbed()
-            .setTitle(`Error Temp-Muting ${target.username}`)
-            .addField("Stack Trace", e.stack.substring(0, 1024))
-            .setDescription(`Error: ${e}`)
+            .setTitle(`Error Using ${command._names.join(", ")}`)
+            .addField("Error Type", error)
+            .addField("Command With Arguments", message.content)
+            .setDescription(`Error: ${info.error}`)
             .setColor("FF0000")
         errors.send(errorEmbed)
-    }
     }
 }
