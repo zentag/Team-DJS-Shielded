@@ -1,37 +1,28 @@
-const Discord = require('discord.js')
-
 module.exports = (client) => {
-    client.on('message', message => {
-        let confirm = false;
-       
-        var i;
-        const { badwords } = require("../data.json")
-        for(i = 0;i < badwords.length; i++) {
-          if(message.content.toLowerCase().includes(badwords[i].toLowerCase()))
-            confirm = true;      
-        }
-    
-        if(confirm) {
-        try{
-          const log = client.channels.cache.get("833832055636361228");
-          const logEmbed = new Discord.MessageEmbed()
-                .setTitle(`Automod: ${message.author.username}`)
-                .setDescription(`Message: ${message.content}`)
-    
-          message.delete()
-          message.channel.send(`**${message.author}, you are not allowed to send that here! More warnings will result in a mute!**`)
-          log.send(logEmbed)
-        } catch (e) {
-            console.log(e)
-            const errors = client.channels.cache.get("863631274001563651");
-            const errorEmbed = new Discord.MessageEmbed()
-                .setTitle(`Error with automod: ${message.author.username}`)
-                .addField(`Content of the automodded message`, `${message.content}`)
-                .addField("Stack Trace", e.stack.substring(0, 1024))
-                .setDescription(`Error: ${e}`)
-                .setColor("FF0000")
-            errors.send(errorEmbed)
-        }
-        }    
-    })
+client.on('message', (message) => antiSpam.message(message));
+const Discord = require('discord.js');
+const AntiSpam = require('discord-anti-spam');
+const antiSpam = new AntiSpam({
+	warnThreshold: 3, // Amount of messages sent in a row that will cause a warning.
+	muteThreshold: 4, // Amount of messages sent in a row that will cause a mute
+	kickThreshold: 7, // Amount of messages sent in a row that will cause a kick.
+	banThreshold: 10, // Amount of messages sent in a row that will cause a ban.
+	maxInterval: 2000, // Amount of time (in milliseconds) in which messages are considered spam.
+	warnMessage: '{@user}, Please stop spamming.', // Message that will be sent in chat upon warning a user.
+	kickMessage: '**{user_tag}** has been kicked for spamming. Next is ban.', // Message that will be sent in chat upon kicking a user.
+	muteMessage: '**{user_tag}** has been muted for spamming. Next is kick.',// Message that will be sent in chat upon muting a user.
+	banMessage: '**{user_tag}** has been banned for spamming.', // Message that will be sent in chat upon banning a user.
+	maxDuplicatesWarning: 6, // Amount of duplicate messages that trigger a warning.
+	maxDuplicatesKick: 10, // Amount of duplicate messages that trigger a warning.
+	maxDuplicatesBan: 12, // Amount of duplicate messages that trigger a warning.
+	maxDuplicatesMute: 8, // Ammount of duplicate message that trigger a mute.
+	ignoredPermissions: [ 'ADMINISTRATOR'], // Bypass users with any of these permissions.
+	ignoreBots: true, // Ignore bot messages.
+	verbose: true, // Extended Logs from module.
+	ignoredMembers: [], // Array of User IDs that get ignored.
+	muteRoleName: "Muted", // Name of the role that will be given to muted users!
+	removeMessages: true // If the bot should remove all the spam messages when taking action on a user!
+	// And many more options... See the documentation.
+});
+
 }
