@@ -1,11 +1,12 @@
 const Discord = require("discord.js")
-
+const mongo = require("../mongo.js")
+const userRecords = require("../schemas/userRecords.js")
+const config = require("../config.json")
 module.exports = {
     minArgs: 1,
     maxArgs: -1,
     permissions: ['KICK_MEMBERS'],
-    callback: ({ message, client }) => {
-        const args = message.content.split(" ")
+    callback: async ({ message, client, args }) => {
         const mutedRole = message.guild.roles.cache.find(
             (role) => role.name === 'Muted'
         );
@@ -17,10 +18,7 @@ module.exports = {
         target.roles.add(mutedRole);
         args.shift()
         args.shift()
-        const string = args.toString()
-        const reason = string.replace(/,/g, " ")
-
-        const channel = client.channels.cache.get("833832055636361228")
+        const reason = args.join(" ")
         if(!reason){
             const muteEmbed = new Discord.MessageEmbed()
           .setTitle("Mute")
@@ -37,11 +35,42 @@ module.exports = {
           .addField("Reason", reason)
         message.channel.send(muteEmbed)
         }
+    // Add Infraction messages
+    const userId = target.id
+    const guildId = message.guild.id
+    var histMsg = `${target.user.tag} was muted for ${reason}`
+    if(!reason) var histMsg =`${target.user.tag} was muted for Unknown Reason`
+    await mongo().then(async (mongoose) => {
+        try {
+          const result = await userRecords.findOneAndUpdate(
+            {
+              userId,
+              guildId
+            },
+            {
+              userId,
+              guildId,
+              $push: {
+                history: histMsg,
+              },
+              $inc: {
+                  infractions: 1
+              }
+            },
+            {
+              upsert: true,
+              new: true,
+            }
+          )
+        } finally {
+          console.log("hell ya, mongo succeed")
+        }
+      })
     },
     error: ({ error, command, info, message }) => {
         const { client } = require('../index.js')
         console.log(info)
-        const errors = client.channels.cache.get("863631274001563651");
+        const errors = client.channels.cache.get(config.errorLogs);
         const errorEmbed = new Discord.MessageEmbed()
             .setTitle(`Error Using ${command._names.join(", ")}`)
             .addField("Error Type", error)

@@ -1,10 +1,10 @@
 const Discord = require("discord.js")
 const got = require("got")
-
+const config = require("../config.json")
 module.exports = {
     minArgs: 0,
     maxArgs: 0,
-    callback: ({ message }) => {
+    callback: async ({ message }) => {
         const embed = new Discord.MessageEmbed()
         got('https://www.reddit.com/r/memes/random/.json').then(response => {
             let content = JSON.parse(response.body);
@@ -26,7 +26,7 @@ module.exports = {
     error: ({ error, command, info, message }) => {
         const { client } = require('../index.js')
         console.log(info)
-        const errors = client.channels.cache.get("863631274001563651");
+        const errors = client.channels.cache.get(config.errorLogs);
         const errorEmbed = new Discord.MessageEmbed()
             .setTitle(`Error Using ${command._names.join(", ")}`)
             .addField("Error Type", error)

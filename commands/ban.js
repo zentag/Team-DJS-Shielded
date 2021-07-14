@@ -1,10 +1,12 @@
 const Discord = require("discord.js")
-
+const config = require("../config.json")
+const mongo = require("../mongo.js")
+const userRecords = require("../schemas/userRecords.js")
 module.exports = {
     minArgs: 1,
     maxArgs: -1,
     permissions: ['BAN_MEMBERS'],
-    callback: ({ message, client }) => {
+    callback: async ({ message, client }) => {
         const args = message.content.split(" ")
         args.shift()
         args.shift()
@@ -44,11 +46,42 @@ module.exports = {
             message.channel.send(banEmbed)
         }
         setTimeout(() => target.ban(), 1000)
+    // Add Infraction messages
+    const userId = target.id
+    const guildId = message.guild.id
+    var histMsg = `${target.user.tag} was banned for ${reason}`
+    if(!reason) var histMsg =`${target.user.tag} was banned for Unknown Reason`
+    await mongo().then(async (mongoose) => {
+        try {
+          const result = await userRecords.findOneAndUpdate(
+            {
+              userId,
+              guildId
+            },
+            {
+              userId,
+              guildId,
+              $push: {
+                history: histMsg,
+              },
+              $inc: {
+                  infractions: 1
+              }
+            },
+            {
+              upsert: true,
+              new: true,
+            }
+          )
+        } finally {
+          console.log("hell ya, mongo succeed")
+        }
+      })
     },
     error: ({ error, command, info, message }) => {
         const { client } = require('../index.js')
         console.log(info)
-        const errors = client.channels.cache.get("863631274001563651");
+        const errors = client.channels.cache.get(config.errorLogs);
         const errorEmbed = new Discord.MessageEmbed()
             .setTitle(`Error Using ${command._names.join(", ")}`)
             .addField("Error Type", error)

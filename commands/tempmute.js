@@ -1,11 +1,13 @@
 const Discord = require("discord.js")
 const ms = require("ms")
-
+const config = require("../config.json")
+const userRecords = require("../schemas/userRecords.js")
+const mongo = require("../mongo.js")
 module.exports = {
     minArgs: 2,
     maxArgs: -1,
     permissions: ['KICK_MEMBERS'],
-    callback: ({ message, client }) => {
+    callback: async ({ message, client }) => {
         const args = message.content.split(" ")
         const mutedRole = message.guild.roles.cache.find(
             (role) => role.name === 'Muted'
@@ -46,12 +48,43 @@ module.exports = {
           .addField("Reason", reason)
         message.channel.send(muteEmbed)
        
-    }
+        }
+    // Add Infraction messages
+    const userId = target.id
+    const guildId = message.guild.id
+    var histMsg = `${target.user.tag} was tempmuted for ${ms(time, { long: true })} and for ${reason}`
+    if(!reason) var histMsg =`${target.user.tag} was tempmuted for ${ms(time, { long: true })} and for Unknown Reason`
+    await mongo().then(async (mongoose) => {
+        try {
+          const result = await userRecords.findOneAndUpdate(
+            {
+              userId,
+              guildId
+            },
+            {
+              userId,
+              guildId,
+              $push: {
+                history: histMsg,
+              },
+              $inc: {
+                  infractions: 1
+              }
+            },
+            {
+              upsert: true,
+              new: true,
+            }
+          )
+        } finally {
+          console.log("hell ya, mongo succeed")
+        }
+      })
     },
     error: ({ error, command, info, message }) => {
         const { client } = require('../index.js')
         console.log(info)
-        const errors = client.channels.cache.get("863631274001563651");
+        const errors = client.channels.cache.get(config.errorLogs);
         const errorEmbed = new Discord.MessageEmbed()
             .setTitle(`Error Using ${command._names.join(", ")}`)
             .addField("Error Type", error)
