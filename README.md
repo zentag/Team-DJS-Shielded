@@ -2,7 +2,7 @@
 **_WORK IN PROGRESS: DO NOT USE UNTIL FINISHED_**  
 **TASK LIST:**  
 - [x] Make warn command (saves in DB)
-- [ ] Make all moderation commands save to a history of infractions type of thing in DB
+- [x] Make all moderation commands save to a history of infractions type of thing in DB
 - [ ] Make setup command to configure per-server settings
 - [ ] Make bad-word filter customizable
 - [ ] Make antispam customizable  
