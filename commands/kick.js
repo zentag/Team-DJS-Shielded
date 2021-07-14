@@ -1,10 +1,12 @@
 const Discord = require("discord.js")
-
+const mongo = require("../mongo.js")
+const userRecords = require("../schemas/userRecords.js")
+const config = require("../config.json")
 module.exports = {
     minArgs: 1,
     maxArgs: -1,
     permissions: ['KICK_MEMBERS'],
-    callback: ({ message, client }) => {
+    callback: async ({ message, client }) => {
         const args = message.content.split(" ")
         args.shift()
         args.shift()
@@ -46,11 +48,42 @@ module.exports = {
             message.channel.send(kickEmbed)
         }
         setTimeout(() => target.kick(), 1000)
+        // Add Infraction messages
+    const userId = target.id
+    const guildId = message.guild.id
+    var histMsg = `${target.user.tag} was kicked for ${reason}`
+    if(!reason) var histMsg =`${target.user.tag} was kicked for Unknown Reason`
+    await mongo().then(async (mongoose) => {
+        try {
+          const result = await userRecords.findOneAndUpdate(
+            {
+              userId,
+              guildId
+            },
+            {
+              userId,
+              guildId,
+              $push: {
+                history: histMsg,
+              },
+              $inc: {
+                  infractions: 1
+              }
+            },
+            {
+              upsert: true,
+              new: true,
+            }
+          )
+        } finally {
+          console.log("hell ya, mongo succeed")
+        }
+      })
     },
     error: ({ error, command, info, message }) => {
         const { client } = require('../index.js')
         console.log(info)
-        const errors = client.channels.cache.get("863631274001563651");
+        const errors = client.channels.cache.get(config.errorLogs);
         const errorEmbed = new Discord.MessageEmbed()
             .setTitle(`Error Using ${command._names.join(", ")}`)
             .addField("Error Type", error)

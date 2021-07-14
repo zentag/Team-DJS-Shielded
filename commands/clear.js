@@ -1,8 +1,10 @@
+const config = require("../config.json")
+
 module.exports = {
     minArgs: 1,
     maxArgs: 1,
     permissions: ['MANAGE_MESSAGES'],
-    callback: ({ message, args }) => {
+    callback: async ({ message, args }) => {
         const input = args[0]
         if (isNaN(input)) {
             return message.channel
@@ -45,7 +47,7 @@ module.exports = {
         error: ({ error, command, info, message }) => {
             const { client } = require('../index.js')
             console.log(info)
-            const errors = client.channels.cache.get("863631274001563651");
+            const errors = client.channels.cache.get(config.errorLogs);
             const errorEmbed = new Discord.MessageEmbed()
                 .setTitle(`Error Using ${command._names.join(", ")}`)
                 .addField("Error Type", error)

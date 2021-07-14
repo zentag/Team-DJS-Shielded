@@ -23,7 +23,7 @@ module.exports = (client) => {
           log.send(logEmbed)
         } catch (e) {
             console.log(e)
-            const errors = client.channels.cache.get("863631274001563651");
+            const errors = client.channels.cache.get(config.errorLogs);
             const errorEmbed = new Discord.MessageEmbed()
                 .setTitle(`Error with automod: ${message.author.username}`)
                 .addField(`Content of the automodded message`, `${message.content}`)

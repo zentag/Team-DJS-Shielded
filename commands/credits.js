@@ -1,14 +1,16 @@
+const config = require("../config.json")
+
 module.exports = {
     minArgs: 0, 
     maxArgs: 0,
     description: "See who's made & helped with the bot",
-    callback: (message) => {
+    callback: async (message) => {
        message.channel.send (" 'Credits: Infinity_Oofs#0420 & Jordan.#8515 (both are the developers of the bot) '")
     },
     error: ({ error, command, info, message }) => {
         const { client } = require('../index.js')
         console.log(info)
-        const errors = client.channels.cache.get("863631274001563651");
+        const errors = client.channels.cache.get(config.errorLogs);
         const errorEmbed = new Discord.MessageEmbed()
             .setTitle(`Error Using ${command._names.join(", ")}`)
             .addField("Error Type", error)

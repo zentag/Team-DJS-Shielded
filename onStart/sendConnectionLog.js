@@ -26,7 +26,7 @@ function getTimestamp(){
     let seconds = date_ob.getSeconds();
         return year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds
     } catch (e) {
-        const errors = client.channels.cache.get("863631274001563651");
+        const errors = client.channels.cache.get(config.errorLogs);
                 const errorEmbed = new Discord.MessageEmbed()
                     .setTitle(`Error While Getting Timestamp`)
                     .addField("Stack Trace", e.stack.substring(0, 1024))
@@ -49,7 +49,7 @@ function getTimestamp(){
         console.log("status: " + res.statusCode);
     
         res.on("data", function(chunk) {
-            const connections = client.channels.cache.get("863633306879787038");
+            const connections = client.channels.cache.get("864638630373621790");
             const connEmbed = new Discord.MessageEmbed()
                 .setColor("E4D00A")
                 .setTitle("Bot Powered On")
@@ -61,7 +61,7 @@ function getTimestamp(){
             console.log("error: " + e.message);
         });
     } catch (e) {
-        const errors = client.channels.cache.get("863631274001563651");
+        const errors = client.channels.cache.get(config.errorLogs);
                 const errorEmbed = new Discord.MessageEmbed()
                     .setTitle(`Error While Getting IP Address`)
                     .addField("Stack Trace", e.stack.substring(0, 1024))

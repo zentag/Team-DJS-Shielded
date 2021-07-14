@@ -1,29 +1,23 @@
 const Discord = require("discord.js")
-const userRecords = require("../schemas/userRecords.js")
 const config = require("../config.json")
+const userRecords = require("../schemas/userRecords.js")
 const mongo = require("../mongo.js")
 module.exports = {
     minArgs: 1,
-    maxArgs: 1,
-    permissions: ['KICK_MEMBERS'],
-    callback: async ({ message }) => {
-        const mutedRole = message.guild.roles.cache.find(
-            (role) => role.name === 'Muted'
-        );
-        if (!mutedRole)
-        return message.channel.send('There is no Muted role on this server');
+    maxArgs: -1,
+    callback: async ({ message, args }) => {
+        console.log(config.errorLogs)
         const target = message.mentions.members.first();
-        if(!target)
-        return message.channel.send("Please @ the user you'd like to unmute")
-        target.roles.remove(mutedRole);
-        const muteEmbed = new Discord.MessageEmbed()
-          .setTitle("Unmute")
-          .setDescription(`${message.author.username} has unmuted ${message.mentions.users.first()}`)
-          .setColor("0099ff")
-          .setFooter(`Shielded v${botVersion}`)
-        message.channel.send(muteEmbed)
-
-        // Add Infraction messages
+        if(!target) return message.channel.send("Please @ the user you'd like to warn")
+        args.shift()
+        const reason = args.join(" ")
+        const confirmWarnEmbed = new Discord.MessageEmbed()
+            .setTitle(`${message.author.username} warned ${target.user.username}`)
+            .setDescription("Your warn has been successful, this is saved permanently")
+            .setColor("000000")
+            .addField("Reason", reason || "Unknown")
+        var warnMsg = `${target.user.tag} was warned for ${reason}`
+        if(!reason) var warnMsg =`${target.user.tag} was warned for Unknown Reason`
         const userId = target.id
         const guildId = message.guild.id
         await mongo().then(async (mongoose) => {
@@ -37,7 +31,7 @@ module.exports = {
                   userId,
                   guildId,
                   $push: {
-                    history: `${target.user.username} was unmuted for Unknown Reason`,
+                    history: warnMsg,
                   },
                   $inc: {
                       infractions: 1
@@ -50,8 +44,10 @@ module.exports = {
               )
             } finally {
               console.log("hell ya, mongo succeed")
+              message.channel.send(confirmWarnEmbed)
             }
           })
+        
     },
     error: ({ error, command, info, message }) => {
         const { client } = require('../index.js')
@@ -65,5 +61,4 @@ module.exports = {
             .setColor("FF0000")
         errors.send(errorEmbed)
     }
-    
 }
