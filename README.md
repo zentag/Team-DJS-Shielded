@@ -7,6 +7,7 @@
 - [X] Make bad-word filter customizable
 - [X] Make antispam customizable (AntiSpam Removed for now)
 - [ ] Make more options in setup command
+- [ ] Make help command
   
 Made by Infinity_Oofs#0420  
 Open source moderation and meme bot.  
