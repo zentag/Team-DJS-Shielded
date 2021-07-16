@@ -3,9 +3,11 @@
 **TASK LIST:**  
 - [x] Make warn command (saves in DB)
 - [x] Make all moderation commands save to a history of infractions type of thing in DB
-- [ ] Make setup command to configure per-server settings
-- [ ] Make bad-word filter customizable
-- [ ] Make antispam customizable  
+- [X] Make setup command to configure per-server settings
+- [X] Make bad-word filter customizable
+- [X] Make antispam customizable (AntiSpam Removed for now)
+- [ ] Make Audit logging
+- [ ] Make more options in setup command
   
 Made by Infinity_Oofs#0420  
 Open source moderation and meme bot.  
