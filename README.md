@@ -1,5 +1,5 @@
 # Team-DJS-Shielded
-**_WORK IN PROGRESS: DO NOT USE UNTIL FINISHED_**  
+**_Most of the bot is finished, suggest something or get help [here](https://discord.gg/YEsEQvW9Xw)_**  
 **TASK LIST:**  
 - [x] Make warn command (saves in DB)
 - [x] Make all moderation commands save to a history of infractions type of thing in DB
@@ -7,7 +7,7 @@
 - [X] Make bad-word filter customizable
 - [X] Make antispam customizable (AntiSpam Removed for now)
 - [ ] Make more options in setup command
-- [ ] Make help command
+- [X] Make help command
   
 Made by Infinity_Oofs#0420  
 Open source moderation and meme bot.  
