@@ -3,6 +3,9 @@ const config = require("../config.json")
 module.exports = {
     minArgs: 1,
     maxArgs: 1,
+    category: 'Moderation',
+    expectedArgs: '<number of message to clear>',
+    description: 'Clear an amount of messages from the channel',
     permissions: ['MANAGE_MESSAGES'],
     callback: async ({ message, args }) => {
         const input = args[0]

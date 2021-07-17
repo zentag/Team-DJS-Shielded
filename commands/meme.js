@@ -4,6 +4,8 @@ const config = require("../config.json")
 module.exports = {
     minArgs: 0,
     maxArgs: 0,
+    category: 'Fun',
+    description: 'Display a meme from reddit',
     callback: async ({ message }) => {
         const embed = new Discord.MessageEmbed()
         got('https://www.reddit.com/r/memes/random/.json').then(response => {

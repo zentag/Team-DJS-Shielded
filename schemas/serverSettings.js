@@ -7,14 +7,14 @@ const reqString = {
 
 const profileSchema = mongoose.Schema({
   guildId: reqString,
-  filter: {
-      type: String,
-      default: "none"
+  badwords: {
+    type: Array,
+    default: []
   },
-  antispamconf: {
+  badWordLogs: {
     type: String,
     default: null
   }
 })
 
-module.exports = mongoose.model('profiles', profileSchema)
+module.exports = mongoose.model('serverSettings', profileSchema)

@@ -5,6 +5,9 @@ const mongo = require("../mongo.js")
 module.exports = {
     minArgs: 1,
     maxArgs: -1,
+    category: 'Moderation',
+    expectedArgs: '<user mention> [reason]',
+    description: 'Warn a user',
     callback: async ({ message, args }) => {
         console.log(config.errorLogs)
         const target = message.mentions.members.first();
@@ -16,6 +19,7 @@ module.exports = {
             .setDescription("Your warn has been successful, this is saved permanently")
             .setColor("000000")
             .addField("Reason", reason || "Unknown")
+            .setFooter(globalEmbedFooter)
         var warnMsg = `${target.user.tag} was warned for ${reason}`
         if(!reason) var warnMsg =`${target.user.tag} was warned for Unknown Reason`
         const userId = target.id

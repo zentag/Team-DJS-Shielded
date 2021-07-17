@@ -6,6 +6,9 @@ const mongo = require("../mongo.js")
 module.exports = {
     minArgs: 2,
     maxArgs: -1,
+    category: 'Moderation',
+    expectedArgs: '<user mention> <time (ex: 3d)> [reason]',
+    description: 'Temporarily mute a user',
     permissions: ['KICK_MEMBERS'],
     callback: async ({ message, client }) => {
         const args = message.content.split(" ")
@@ -35,7 +38,7 @@ module.exports = {
           .setTitle("Temporary Mute")
           .setDescription(`${message.author.username} has temporarily muted ${message.mentions.users.first()}`)
           .setColor("0099ff")
-          .setFooter(`Shielded v${botVersion}`)
+          .setFooter(globalEmbedFooter)
           .addField("Duration", ms(time, { long: true }))
         message.channel.send(muteEmbed)
         }else{
@@ -43,7 +46,7 @@ module.exports = {
           .setTitle("Temporary Mute")
           .setDescription(`${message.author.username} has temporarily muted ${message.mentions.users.first()}`)
           .setColor("0099ff")
-          .setFooter(`Shielded v${botVersion}`)
+          .setFooter(globalEmbedFooter)
           .addField("Duration", ms(time, { long: true }))
           .addField("Reason", reason)
         message.channel.send(muteEmbed)

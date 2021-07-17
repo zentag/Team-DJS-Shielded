@@ -5,6 +5,9 @@ const config = require("../config.json")
 module.exports = {
     minArgs: 1,
     maxArgs: -1,
+    category: 'Moderation',
+    expectedArgs: '<user mention> [reason]',
+    description: 'Kick a user',
     permissions: ['KICK_MEMBERS'],
     callback: async ({ message, client }) => {
         const args = message.content.split(" ")
@@ -34,7 +37,7 @@ module.exports = {
                 .setTitle("Kick")
                 .setDescription(`${message.author.username} has kicked ${message.mentions.users.first()}`)
                 .setColor("0099ff")
-                .setFooter(`Shielded v${botVersion}`)
+                .setFooter(globalEmbedFooter)
             message.channel.send(kickEmbed)
         }
         else{
@@ -43,7 +46,7 @@ module.exports = {
                 .setTitle("Kick")
                 .setDescription(`${message.author.username} has kicked ${message.mentions.users.first()}`)
                 .setColor("0099ff")
-                .setFooter(`Shielded v${botVersion}`)
+                .setFooter(globalEmbedFooter)
                 .addField("Reason", reason)
             message.channel.send(kickEmbed)
         }
