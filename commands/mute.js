@@ -5,6 +5,9 @@ const config = require("../config.json")
 module.exports = {
     minArgs: 1,
     maxArgs: -1,
+    category: 'Moderation',
+    expectedArgs: '<user mention> [reason]',
+    description: 'Mute a user',
     permissions: ['KICK_MEMBERS'],
     callback: async ({ message, client, args }) => {
         const mutedRole = message.guild.roles.cache.find(
@@ -24,14 +27,14 @@ module.exports = {
           .setTitle("Mute")
           .setDescription(`${message.author.username} has muted ${message.mentions.users.first()}`)
           .setColor("0099ff")
-          .setFooter(`Shielded v${botVersion}`)
+          .setFooter(globalEmbedFooter)
         message.channel.send(muteEmbed)
         }else{
             const muteEmbed = new Discord.MessageEmbed()
           .setTitle("Mute")
           .setDescription(`${message.author.username} has muted ${message.mentions.users.first()}`)
           .setColor("0099ff")
-          .setFooter(`Shielded v${botVersion}`)
+          .setFooter(globalEmbedFooter)
           .addField("Reason", reason)
         message.channel.send(muteEmbed)
         }

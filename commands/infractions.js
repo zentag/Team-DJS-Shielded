@@ -6,6 +6,9 @@ const mongo = require("../mongo.js")
 module.exports = {
     minArgs: 0,
     maxArgs: -1,
+    category: 'Moderation',
+    description: "Check a user's infraction history",
+    expectedArgs: '<user mention>',
     callback: async ({ message, args }) => {
         const target = message.mentions.users.first() || message.author
         await mongo().then(async (mongoose) => {
@@ -18,7 +21,7 @@ module.exports = {
                   .setTitle(`${target.tag}'s Infraction History`)
                   .setDescription(`${docs.history.join("\n\n")}`)
                   .setColor("000000")
-                  .setFooter(`Shielded v${botVersion}`)
+                  .setFooter(globalEmbedFooter)
                 message.channel.send(embed)
             }
         });

@@ -5,6 +5,9 @@ const mongo = require("../mongo.js")
 module.exports = {
     minArgs: 1,
     maxArgs: 1,
+    category: 'Moderation',
+    expectedArgs: '<user mention>',
+    description: 'Unmute a user',
     permissions: ['KICK_MEMBERS'],
     callback: async ({ message }) => {
         const mutedRole = message.guild.roles.cache.find(
@@ -20,7 +23,7 @@ module.exports = {
           .setTitle("Unmute")
           .setDescription(`${message.author.username} has unmuted ${message.mentions.users.first()}`)
           .setColor("0099ff")
-          .setFooter(`Shielded v${botVersion}`)
+          .setFooter(globalEmbedFooter)
         message.channel.send(muteEmbed)
 
         // Add Infraction messages

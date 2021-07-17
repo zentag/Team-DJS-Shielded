@@ -21,18 +21,29 @@ req, res) => res.send('Hello World!'));
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
 // End of REPL stuff
 
-global.botVersion = "1.0"
+global.botVersion = "2.0"
+global.globalEmbedFooter = `Shielded v${botVersion}`
 
 client.on('ready', async () => {
     try{
     mongoose.set('useFindAndModify', false);
     console.log('ready')
-    sendConnectionLog(client)
+    
     client.user.setActivity("My prefix is $", { type: "Playing"});
     new WOKCommands(client, {
         commandsDir: 'commands',
-        featureDir: 'features'
-    }).setDefaultPrefix('$').setMongoPath(process.env.mongoPath)
+        featureDir: 'features',
+        testServers: ['864638023496499200'],
+    }).setDefaultPrefix('$').setMongoPath(process.env.mongoPath).setDisplayName('Shielded').setCategorySettings([
+        {
+            name: 'Moderation',
+            emoji: '🔨'
+        },
+        {
+            name: 'Fun',
+            emoji: '🎉'
+        },
+    ])
     await mongo().then(mongoose => {
         try{
             console.log("Connected to mongo!")
@@ -41,6 +52,7 @@ client.on('ready', async () => {
             mongoose.connection.close()
         }
     })
+    sendConnectionLog(client)
     } catch(e) {
         const errors = client.channels.cache.get(config.errorLogs);
             const errorEmbed = new Discord.MessageEmbed()

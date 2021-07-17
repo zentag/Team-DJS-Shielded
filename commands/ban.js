@@ -5,6 +5,9 @@ const userRecords = require("../schemas/userRecords.js")
 module.exports = {
     minArgs: 1,
     maxArgs: -1,
+    category: 'Moderation',
+    expectedArgs: '<user mention> [reason]',
+    description: 'Ban a user',
     permissions: ['BAN_MEMBERS'],
     callback: async ({ message, client }) => {
         const args = message.content.split(" ")
@@ -32,7 +35,7 @@ module.exports = {
                 .setTitle("Ban")
                 .setDescription(`${message.author.username} has banned ${message.mentions.users.first()}`)
                 .setColor("0099ff")
-                .setFooter(`Shielded v${botVersion}`)
+                .setFooter(globalEmbedFooter)
             message.channel.send(banEmbed)
         }
         else{
@@ -41,7 +44,7 @@ module.exports = {
                 .setTitle("Ban")
                 .setDescription(`${message.author.username} has banned ${message.mentions.users.first()}`)
                 .setColor("0099ff")
-                .setFooter(`Shielded v${botVersion}`)
+                .setFooter(globalEmbedFooter)
                 .addField("Reason", reason)
             message.channel.send(banEmbed)
         }
