@@ -4,7 +4,7 @@ module.exports = {
     name: "support",
     description: " ':thumbsup:'",
     execute: (message) => {
-       message.channel.send (" Support:  https://discord.gg/kt6ywN9a6s") 
+       message.channel.send (" Support:  https://discord.gg/YEsEQvW9Xw") 
     },
     error: ({ error, command, info, message }) => {
         const { client } = require('../index.js')
