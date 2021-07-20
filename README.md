@@ -1,13 +1,7 @@
 # Team-DJS-Shielded
-**_Most of the bot is finished, suggest something or get help [here](https://discord.gg/YEsEQvW9Xw)_**  
-**TASK LIST:**  
-- [x] Make warn command (saves in DB)
-- [x] Make all moderation commands save to a history of infractions type of thing in DB
-- [X] Make setup command to configure per-server settings
-- [X] Make bad-word filter customizable
-- [X] Make antispam customizable (AntiSpam Removed for now)
-- [ ] Make more options in setup command
-- [X] Make help command
+**_Shielded V1 is finished, visit the support server [here](https://discord.gg/YEsEQvW9Xw)_**  
+  
+**_Rewrite Soon, be patient for Shielded V2_**
   
 Made by Infinity_Oofs#0420  
 Open source moderation and meme bot.  
