@@ -1,7 +1,7 @@
 # Team-DJS-Shielded
-**_Shielded V1 is finished, visit the support server [here](https://discord.gg/YEsEQvW9Xw)_**  
+### Shielded V2 is finished!!!!!! Visit the support server [here](https://discord.gg/YEsEQvW9Xw) 
   
-**_Rewrite Soon, be patient for Shielded V2_**
+**_WOO! Rewrite is finished_**
   
 Made by Infinity_Oofs#0420  
 Open source moderation and meme bot.  
