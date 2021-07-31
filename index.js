@@ -1,8 +1,6 @@
+const { init } = require('./handler/infcmd.js')
 const Discord = require('discord.js') 
 const client = new Discord.Client();
-const WOKCommands = require('wokcommands');
-const mongo = require('./mongo.js')
-const mongoose = require('mongoose')
 const sendConnectionLog = require("./onStart/sendConnectionLog.js");
 const config = require("./config.json")
 require('dotenv').config()
@@ -16,43 +14,55 @@ const port = 3000;
 app.get('/', (
 req, res) => res.send('Hello World!'));
 
-    client.login(process.env.token)
+    
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
 // End of REPL stuff
 
-global.botVersion = "2.0"
-global.globalEmbedFooter = `Shielded v${botVersion}`
+global._botVersion = "2.0"
+global._globalEmbedFooter = `Shielded v${_botVersion}`
 
-client.on('ready', async () => {
+client.on('ready', () => {
     try{
-    mongoose.set('useFindAndModify', false);
-    console.log('ready')
-    
-    client.user.setActivity("My prefix is $", { type: "Playing"});
-    new WOKCommands(client, {
+      console.log('ready')
+      
+      client.user.setActivity("<mention> help or <mention> prefix", { type: "PLAYING"});
+      init(client, {
         commandsDir: 'commands',
-        featureDir: 'features',
-        testServers: ['864638023496499200'],
-    }).setDefaultPrefix('$').setMongoPath(process.env.mongoPath).setDisplayName('Shielded').setCategorySettings([
-        {
-            name: 'Moderation',
-            emoji: '🔨'
-        },
-        {
-            name: 'Fun',
-            emoji: '🎉'
-        },
-    ])
-    await mongo().then(mongoose => {
-        try{
-            console.log("Connected to mongo!")
-        }
-        finally{
-            mongoose.connection.close()
-        }
-    })
-    sendConnectionLog(client)
+        featuresDir: 'features',
+        prefix: '$',
+        ownerId: '521115847801044993',
+        testServers: ['811390529728020480'],
+        mongoURI: process.env.mongoPath,
+        defaultError: ({ error, command, errortype, text, client, message, rr, permission }) => {
+          const config = require("./config.json")
+          switch(errortype){
+            case "EXCEPTION":
+              console.log(error);
+              const errors = client.channels.cache.get(config.errorLogs);
+              const errorEmbed = new Discord.MessageEmbed()
+                  .setTitle(`Error Using ${command._name}`)
+                  .addField("Error Type", errortype)
+                  .addField("Command With Arguments", text)
+                  .setDescription(`Error: ${error}`)
+                  .setColor("FF0000")
+              errors.send(errorEmbed)
+              break;
+            case "ROLE":
+              message.reply(`You must have the role "${rr}" to run this command`)
+              break;
+            case "PERMISSION":
+              message.reply(`You must have the permission "${permission}" to run this command!`)
+              break;
+            default:
+              message.reply("An unknown error occurred. This has been reported to the developers")
+          } 
+      }
+      })
+      setTimeout(() => {
+        sendConnectionLog(client)
+      }, 3000)
+      
     } catch(e) {
         const errors = client.channels.cache.get(config.errorLogs);
             const errorEmbed = new Discord.MessageEmbed()
@@ -61,6 +71,9 @@ client.on('ready', async () => {
                 .setDescription(`Error: ${e}`)
                 .setColor("FF0000")
             errors.send(errorEmbed)
+        console.log(e)
     }
 })
 
+
+client.login(process.env.token)

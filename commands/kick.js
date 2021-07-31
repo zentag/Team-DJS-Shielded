@@ -1,7 +1,7 @@
 const Discord = require("discord.js")
 const mongo = require("../mongo.js")
 const userRecords = require("../schemas/userRecords.js")
-const config = require("../config.json")
+
 module.exports = {
     minArgs: 1,
     maxArgs: -1,
@@ -37,7 +37,7 @@ module.exports = {
                 .setTitle("Kick")
                 .setDescription(`${message.author.username} has kicked ${message.mentions.users.first()}`)
                 .setColor("0099ff")
-                .setFooter(globalEmbedFooter)
+                .setFooter(_globalEmbedFooter)
             message.channel.send(kickEmbed)
         }
         else{
@@ -46,7 +46,7 @@ module.exports = {
                 .setTitle("Kick")
                 .setDescription(`${message.author.username} has kicked ${message.mentions.users.first()}`)
                 .setColor("0099ff")
-                .setFooter(globalEmbedFooter)
+                .setFooter(_globalEmbedFooter)
                 .addField("Reason", reason)
             message.channel.send(kickEmbed)
         }
@@ -79,20 +79,9 @@ module.exports = {
             }
           )
         } finally {
-          console.log("hell ya, mongo succeed")
+          
         }
       })
     },
-    error: ({ error, command, info, message }) => {
-        const { client } = require('../index.js')
-        console.log(info)
-        const errors = client.channels.cache.get(config.errorLogs);
-        const errorEmbed = new Discord.MessageEmbed()
-            .setTitle(`Error Using ${command._names.join(", ")}`)
-            .addField("Error Type", error)
-            .addField("Command With Arguments", message.content)
-            .setDescription(`Error: ${info.error}`)
-            .setColor("FF0000")
-        errors.send(errorEmbed)
-    }
+    
 }

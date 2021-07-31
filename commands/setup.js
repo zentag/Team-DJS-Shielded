@@ -25,7 +25,7 @@ module.exports = {
         })
         message.channel.send(questions[0])
         collector.on('collect', m => {
-            console.log(counter0)
+            
             if((counter0 == 1 || counter0 == 2)) console.log("test -1")
             if(!(m.content == "y" || m.content == "n")) console.log("test 0")
             if((counter0 == 1 || counter0 == 2) && !(m.content == "y" || m.content == "n")){
@@ -124,7 +124,7 @@ module.exports = {
                     }
                   )
                 } finally {
-                  console.log("hell ya, mongo succeed")
+                  
                 }
               })
         })
@@ -135,22 +135,11 @@ module.exports = {
         const embed = new Discord.MessageEmbed()
           .setTitle("Setup Help")
           .setDescription("Setup commands: \n ```$setup badword``` ```$setup options```")
-          .setFooter(globalEmbedFooter)
+          .setFooter(_globalEmbedFooter)
         message.channel.send(embed)
     }
   },
-  error: ({ error, command, info, message }) => {
-      const { client } = require('../index.js')
-      console.log(info)
-      const errors = client.channels.cache.get(config.errorLogs);
-      const errorEmbed = new Discord.MessageEmbed()
-          .setTitle(`Error Using ${command._names.join(", ")}`)
-          .addField("Error Type", error)
-          .addField("Command With Arguments", message.content)
-          .setDescription(`Error: ${info.error}`)
-          .setColor("FF0000")
-      errors.send(errorEmbed)
-  }
+  
 }
 
 async function nonDefaultSetup(arguments, enabled, guildId) {
@@ -185,7 +174,7 @@ async function nonDefaultSetup(arguments, enabled, guildId) {
             }
           )
         } finally {
-          console.log("hell ya, mongo succeed")
+          
         }
       })
 }
@@ -221,7 +210,7 @@ async function defaultSetup(enabled, guildId) {
             }
           )
         } finally {
-          console.log("hell ya, mongo succeed")
+          
         }
       })
 }

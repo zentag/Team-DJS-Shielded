@@ -1,5 +1,5 @@
 const Discord = require("discord.js")
-const config = require("../config.json")
+
 const userRecords = require("../schemas/userRecords.js")
 const mongo = require("../mongo.js")
 module.exports = {
@@ -9,7 +9,7 @@ module.exports = {
     expectedArgs: '<user mention> [reason]',
     description: 'Warn a user',
     callback: async ({ message, args }) => {
-        console.log(config.errorLogs)
+        (config.errorLogs)
         const target = message.mentions.members.first();
         if(!target) return message.channel.send("Please @ the user you'd like to warn")
         args.shift()
@@ -19,7 +19,7 @@ module.exports = {
             .setDescription("Your warn has been successful, this is saved permanently")
             .setColor("000000")
             .addField("Reason", reason || "Unknown")
-            .setFooter(globalEmbedFooter)
+            .setFooter(_globalEmbedFooter)
         var warnMsg = `${target.user.tag} was warned for ${reason}`
         if(!reason) var warnMsg =`${target.user.tag} was warned for Unknown Reason`
         const userId = target.id
@@ -47,22 +47,11 @@ module.exports = {
                 }
               )
             } finally {
-              console.log("hell ya, mongo succeed")
+              
               message.channel.send(confirmWarnEmbed)
             }
           })
         
     },
-    error: ({ error, command, info, message }) => {
-        const { client } = require('../index.js')
-        console.log(info)
-        const errors = client.channels.cache.get(config.errorLogs);
-        const errorEmbed = new Discord.MessageEmbed()
-            .setTitle(`Error Using ${command._names.join(", ")}`)
-            .addField("Error Type", error)
-            .addField("Command With Arguments", message.content)
-            .setDescription(`Error: ${info.error}`)
-            .setColor("FF0000")
-        errors.send(errorEmbed)
-    }
+    
 }
