@@ -1,4 +1,5 @@
-const config = require("../config.json")
+
+const Discord = require('discord.js')
 
 module.exports = {
     minArgs: 1,
@@ -47,18 +48,28 @@ module.exports = {
               });
           })
         },
-        error: ({ error, command, info, message }) => {
-            const { client } = require('../index.js')
-            console.log(info)
-            const errors = client.channels.cache.get(config.errorLogs);
-            const errorEmbed = new Discord.MessageEmbed()
-                .setTitle(`Error Using ${command._names.join(", ")}`)
-                .addField("Error Type", error)
-                .addField("Command With Arguments", message.content)
-                .setDescription(`Error: ${info.error}`)
-                .setColor("FF0000")
-            errors.send(errorEmbed)
-        }
+        error: ({ error, command, errortype, text, client }) => {
+          switch(errortype){
+            case "EXCEPTION":
+              console.log(e)
+              const errors = client.channels.cache.get(config.errorLogs);
+              const errorEmbed = new Discord.MessageEmbed()
+                  .setTitle(`Error Using ${command._name}`)
+                  .addField("Error Type", errortype)
+                  .addField("Command With Arguments", text)
+                  .setDescription(`Error: ${error}`)
+                  .setColor("FF0000")
+              errors.send(errorEmbed)
+              break;
+            case "ROLE":
+              message.reply(`You must have the role "${rr}" to run this command`)
+              break;
+            case "PERMISSION":
+              message.reply(`You must have the permission "${permission}" to run this command`)
+              break;
+            
+          } 
+      }
       
     
 }

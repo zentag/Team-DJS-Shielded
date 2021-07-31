@@ -46,7 +46,6 @@ function getTimestamp(){
             };
     
         http.get(options, function(res) {
-        console.log("status: " + res.statusCode);
     
         res.on("data", function(chunk) {
             const connections = client.channels.cache.get("864638630373621790");

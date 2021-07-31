@@ -5,9 +5,9 @@ const config = require('../config.json')
 
 module.exports = (client) => {
     client.on('message', async message => {
-        if(message.author.bot || message.channel.type === 'DM') return
+        if(message.author.bot || message.channel.type == 'DM' || message.guild == null) return
         let confirm = false;
-       
+    
         var i;
         await mongo().then(async (mongoose) => {
         try {
@@ -15,24 +15,24 @@ module.exports = (client) => {
             if (err){
                 console.log(err)
             } else if(!docs) {
-                console.log("no docs")
+                
             } else {
                 const { badwords, badWordLogs } = docs
                 for(i = 0;i < badwords.length; i++) {
-                  if(message.content.toLowerCase().includes(badwords[i].toLowerCase()))
+                if(message.content.toLowerCase().includes(badwords[i].toLowerCase()))
                     confirm = true;      
                 }
             
                 if(confirm) {
                 try{
-                  const log = client.channels.cache.get(badWordLogs);
-                  const logEmbed = new Discord.MessageEmbed()
+                const log = client.channels.cache.get(badWordLogs);
+                const logEmbed = new Discord.MessageEmbed()
                         .setTitle(`Automod: ${message.author.username}`)
                         .setDescription(`Message: ${message.content}`)
             
-                  message.delete()
-                  message.channel.send(`**${message.author}, you are not allowed to send that here! More warnings will result in a mute!**`)
-                  // log.send(logEmbed)
+                message.delete()
+                message.channel.send(`**${message.author}, you are not allowed to send that here! More warnings will result in a mute!**`)
+                // log.send(logEmbed)
                 } catch (e) {
                     console.log(e)
                     const errors = client.channels.cache.get(config.errorLogs);
