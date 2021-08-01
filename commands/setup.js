@@ -129,12 +129,12 @@ module.exports = {
               })
         })
     } else if(args[0] && args[0] == "options"){
-      return message.channel.send(`We're sorry, but this feature is disabled currently! You may use ${prefix}setup to see what setup command are available`)
+      return message.channel.send(`We're sorry, but this feature is disabled currently! You may use ${prefix}setup to see what setup command are available\n\n**This command is not in any way essential to the functionality of this bot**`)
 
     } else {
         const embed = new Discord.MessageEmbed()
           .setTitle("Setup Help")
-          .setDescription("Setup commands: \n ```$setup badword``` ```$setup options```")
+          .setDescription("Setup commands: \n ```$setup badword```\n**DISABLED** ```$setup options```")
           .setFooter(_globalEmbedFooter)
         message.channel.send(embed)
     }

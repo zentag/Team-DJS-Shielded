@@ -1,5 +1,5 @@
 const Discord = require("discord.js")
-
+const config = require('../config.json')
 const userRecords = require("../schemas/userRecords.js")
 const mongo = require("../mongo.js")
 module.exports = {
@@ -9,7 +9,6 @@ module.exports = {
     expectedArgs: '<user mention> [reason]',
     description: 'Warn a user',
     callback: async ({ message, args }) => {
-        (config.errorLogs)
         const target = message.mentions.members.first();
         if(!target) return message.channel.send("Please @ the user you'd like to warn")
         args.shift()
