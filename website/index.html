@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Submit Message</title>
+        <link rel="stylesheet" href="/scripts/style.css" type="text/css">
+        <link rel="icon" href="/images/favicon" type="image/png">
+    </head>
+    <body class="black">
+        <div class="centerDiv">
+            <h1 class="centerText">Submit a Message to the bot.</h1>
+            <form method="post" action="/submit-form" class="centerForm">
+                <label for="channelID">Channel ID: </label>
+                <input type="text" name="channelID" class="sendMessage"/><br />
+                <label for="channeltype">Channel Type (DM or GUILD): </label>
+                <input type="text" name="channeltype"  class="sendMessage"/><br />
+                <label for="message">Message to send: </label>
+                <input type="text" name="message"  class="sendMessage"/><br />
+                <label for="password">Shielded Password: </label>
+                <input type="password" name="password" class="sendMessage" /><br />
+                <input type="submit" />
+            </form>
+        </div>
+    </body>
+</html>
