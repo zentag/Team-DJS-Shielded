@@ -1,4 +1,5 @@
 const { init } = require('./handler/infcmd.js')
+const { startServer } = require('./website/website.js')
 const Discord = require('discord.js') 
 const client = new Discord.Client();
 const sendConnectionLog = require("./onStart/sendConnectionLog.js");
@@ -6,18 +7,6 @@ const config = require("./config.json")
 require('dotenv').config()
 
 exports.client = client;
-// Hopefully REPL Stuff
-const express = require('express');
-const app = express();
-const port = 3000;
-
-app.get('/', (
-req, res) => res.send('Hello World!'));
-
-    
-
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
-// End of REPL stuff
 
 global._botVersion = "2.0"
 global._globalEmbedFooter = `Shielded v${_botVersion}`
@@ -25,7 +14,7 @@ global._globalEmbedFooter = `Shielded v${_botVersion}`
 client.on('ready', () => {
     try{
       console.log('ready')
-      
+      startServer(client)
       client.user.setActivity("<mention> help or <mention> prefix", { type: "PLAYING"});
       init(client, {
         commandsDir: 'commands',
