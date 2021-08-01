@@ -13,6 +13,7 @@ module.exports = {
         app.get('/', (req, res) => res.sendFile(path.join(__dirname, '/index.html')));
         app.get('/bad', (req, res) => res.sendFile(path.join(__dirname, '/badinput.html')));
         app.get('/scripts/style.css', (req, res) => res.sendFile(path.join(__dirname, '/style.css')));
+        app.get('/images/favicon', (req, res) => res.sendFile(path.join(__dirname, '/favicon.png')));
         
         app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
         
