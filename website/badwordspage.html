@@ -15,7 +15,7 @@
                 const badwordsunsplit = '<%= badwords %>'
                 const badwords = badwordsunsplit.split(",badwords-seperator,")
                 const ID = h1.innerText.replace("Server ID: ", "")
-                if(badwordsunsplit !== "none"){
+                if(badwordsunsplit !== "none" && badwords !== [""] && badwordsunsplit !== ""){
                     // Make a container element for the list
                     listContainer = document.createElement('div')
                     listContainer.classList.add("centerDiv")
