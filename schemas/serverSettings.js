@@ -14,6 +14,14 @@ const profileSchema = mongoose.Schema({
   badWordLogs: {
     type: String,
     default: null
+  },
+  announcement: {
+    type: String,
+    default: null
+  },
+  verified: {
+    type: String,
+    default: "channel.guild.roles.everyone"
   }
 })
 

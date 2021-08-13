@@ -11,7 +11,7 @@ module.exports = {
   expectedArgs: '[setup option]',
   testOnly: false,
   permissions: ['ADMINISTRATOR'],
-  callback: async ({ message, args, prefix }) => {
+  callback: async ({ message, args, prefix, client }) => {
     if(args[0] && args[0] == "antispam"){
         return message.channel.send(`We're sorry, but this feature is disabled currently! You may use ${prefix}setup to see what setup command are available`)
         let guildId = message.guild.id
@@ -86,24 +86,23 @@ module.exports = {
 
         })
     } else if(args[0] && args[0] == "badword") {
-        let badwords = []
         const guildId = message.guild.id
         const filter = m => m.author.id === message.author.id
         const collector = new Discord.MessageCollector(message.channel, filter, {
-        max: 100
+          max: 100
         })
         message.channel.send("Hello, welcome to the bad word add-er! Type a bad word, then send it. Keep doing this until you are done, then send `done`")
         collector.on('collect', m => {
-            if(m.content == "done"){
-                message.channel.send("Finished!")
-                collector.stop()
-            } else {
-                if(badwords.indexOf(m.content) == -1){
-                    badwords.push(m.content)
-                }
-            }
-            m.react("✅")
-            console.log(badwords)
+          if(m.content == "done"){
+              message.channel.send("Finished!")
+              collector.stop()
+          } else {
+              if(badwords.indexOf(m.content) == -1){
+                  badwords.push(m.content)
+              }
+          }
+          m.react("✅")
+          console.log(badwords)
         })
         collector.on('end', async collected => {
             await mongo().then(async (mongoose) => {
@@ -129,8 +128,101 @@ module.exports = {
               })
         })
     } else if(args[0] && args[0] == "options"){
-      return message.channel.send(`We're sorry, but this feature is disabled currently! You may use ${prefix}setup to see what setup command are available\n\n**This command is not in any way essential to the functionality of this bot**`)
-
+      let verifiedAnswer
+      let announcementAnswer
+      const guildId = message.guild.id
+      const filter = m => m.author.id === message.author.id
+      const questions = [
+        "What is the name of your verified role? Reply with `none` if you don't have a verified role or `default` if you'd like to keep the current role name",
+        "Announcement Channel? Reply with the channel with a #, `none` to opt out of announcements, or `default` to keep whatever settings you have now"
+      ]
+      const collector = new Discord.MessageCollector(message.channel, filter, {
+        max: questions.length
+      })
+      let counter = 0
+      message.channel.send(questions[0])
+      collector.on('collect', m => {
+          if(counter == 0 && m.content == "none"){
+              message.channel.send("Ok, we won't have a verified role")
+              verifiedAnswer = "channel.guild.roles.everyone"
+          } else if (counter == 0 && m.content == "default"){
+              message.channel.send("Ok, we'll keep the current verified role")
+              verifiedAnswer = "default"
+          } else if (counter == 0) {
+              message.channel.send("Ok, we'll set the verified role name to `" + m.content + "`!")
+              verifiedAnswer = m.content
+          }
+          if(counter == 1 && m.content == "none"){
+              message.channel.send("Ok, we won't have an announcement channel")
+              announcementAnswer = "none"
+          } else if (counter == 1 && m.content == "default"){
+              message.channel.send("Ok, we'll keep the current announcement channel")
+              announcementAnswer = "default"
+          } else if (counter == 1) {
+              const channel = client.channels.cache.get(m.content.replace("<#", "").replace(">", ""))
+              if(!channel){
+                message.reply("Invalid Channel, stopping `setup options`")
+                announcementAnswer = "default"
+                collector.stop()
+                return
+              }
+              message.channel.send(`Ok, we'll set the announcement channel to ${m.content}!`)
+              announcementAnswer = m.content.replace("<#", "").replace(">", "")
+          }
+          counter++
+          if(questions[counter]) message.channel.send(questions[counter])
+      })
+      
+      collector.on('end', async collected => {
+          message.channel.send("Thank you for completing `options setup`")
+          if(collected[0] == "default" && collected[1] == "default") return
+          if(collected[0] !== "default"){
+            await mongo().then(async (mongoose) => {
+              try {
+                const result = await serverSettings.findOneAndUpdate(
+                  {
+                    guildId
+                  },
+                  {
+                    guildId,
+                    $set: {
+                        verified: verifiedAnswer
+                    }
+                  },
+                  {
+                    upsert: true,
+                    new: true,
+                  }
+                )
+              } finally {
+                
+              }
+            })
+          }
+          if(collected[1] !== "default"){
+            await mongo().then(async (mongoose) => {
+              try {
+                const result = await serverSettings.findOneAndUpdate(
+                  {
+                    guildId
+                  },
+                  {
+                    guildId,
+                    $set: {
+                        announcement: announcementAnswer
+                    }
+                  },
+                  {
+                    upsert: true,
+                    new: true,
+                  }
+                )
+              } finally {
+                
+              }
+            })
+          }
+      })
     } else {
         const embed = new Discord.MessageEmbed()
           .setTitle("Setup Help")
