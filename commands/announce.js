@@ -8,7 +8,9 @@ module.exports = {
     maxArgs: -1,
     ownerOnly: true,
     callback: async ({ message, args, client, prefix }) => {
+        let counter = 0
         client.guilds.cache.forEach(async (guild) => {
+            counter++
             await mongo().then(async (mongoose) => {
                 const result = serverRecords.findOne({ guildId: message.guild.id }, function (err, docs) {
                     if (err){
@@ -40,5 +42,6 @@ module.exports = {
             });
 
         })
+        message.reply(`Sent to ${counter} guilds!`)
     }
 }
