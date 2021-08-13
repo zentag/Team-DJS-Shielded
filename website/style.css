@@ -1,6 +1,10 @@
 h1{
     color: red;
 }
+.red{
+    color: red;
+    font-family: 'Courier New';
+}
 input.sendMessage{
     margin: 5px
 }
@@ -10,10 +14,11 @@ body.black {
 }
 .centerDiv {
     margin: auto;
-    width: 60%;
+    width: 50%;
     border: 5px solid #000000;
     padding: 10px;
     background: rgb(65, 63, 63);
+    height: auto
 }
 .centerForm {
     margin: auto;
@@ -24,6 +29,9 @@ body.black {
 .centerText{
     text-align: center;
     background: rgb(65, 63, 63);
+}
+.centerText1{
+    text-align: center;
 }
 .back{
     background: rgb(65, 63, 63);
@@ -42,4 +50,13 @@ input{
     margin: auto;
     width: 60%;
     padding: 10px;
+}
+.badwordsh1 {
+    padding-left: 20px
+}
+.bluelink{
+    color: lightskyblue;
+}
+.invalidguildstuff{
+    padding-left: 30px;
 }

@@ -1,3 +1,6 @@
+const mongo = require("../mongo.js")
+const serverSettings = require('../schemas/serverSettings.js')
+
 module.exports = {
     startServer: (client) => {
         const express = require('express');
@@ -12,6 +15,7 @@ module.exports = {
         
         app.get('/', (req, res) => res.sendFile(path.join(__dirname, '/index.html')));
         app.get('/bad', (req, res) => res.sendFile(path.join(__dirname, '/badinput.html')));
+        app.get('/submit', (req, res) => res.sendFile(path.join(__dirname, '/submit.html')));
         app.get('/scripts/style.css', (req, res) => res.sendFile(path.join(__dirname, '/style.css')));
         app.get('/images/favicon', (req, res) => res.sendFile(path.join(__dirname, '/favicon.png')));
         
@@ -20,6 +24,7 @@ module.exports = {
         app.use(express.urlencoded({ extended: false }));
         app.use(express.static(path.join(__dirname, 'public')));
         app.use(limiter);
+        app.engine('html', require('ejs').renderFile);
         
         app.post('/submit-form', function (req, res) {
         const { channelID, channeltype, message, password } = req.body
@@ -32,6 +37,26 @@ module.exports = {
             res.sendFile(path.join(__dirname, '/badinput.html'))
         }
         res.sendFile(path.join(__dirname, '/submit.html'));
+        });
+
+        app.get('/servers/:id/badwords/confirmed', (req, res) => {
+            let badwords = "none"
+            mongo().then(async (mongoose) => {
+                const result = serverSettings.findOne({ guildId: req.params.id }, function (err, docs) {
+                    if (err){
+                        console.log(err)
+                    }
+                    else{
+                        if(docs && docs.badwords){
+                            badwords = docs.badwords.join(",badwords-seperator,")
+                        }
+                        res.render(path.join(__dirname, '/badwordspage.html'), {id:req.params.id,page:req.params.page,badwords:badwords})
+                    }
+                });
+            })
+        });
+        app.get('/servers/:id/badwords/', (req, res) => {
+            res.sendFile(path.join(__dirname, '/confirmbadwords.html'))
         });
     }
 }

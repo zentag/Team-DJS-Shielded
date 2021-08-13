@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <title>Bad words for serverID <var>id</var></title>
+        <link rel="stylesheet" href="/scripts/style.css" type="text/css">
+        <link rel="icon" href="/images/favicon" type="image/png">
+    </head>
+    <body class="black">
+        <script>
+            function makeList() {
+                let i = 0
+                let listItem
+                const h1 = document.createElement("h1")
+                h1.classList.add("badwordsh1")
+                h1.innerHTML = "Censored Words For Server ID: <%= id %>"
+                const badwordsunsplit = '<%= badwords %>'
+                const badwords = badwordsunsplit.split(",badwords-seperator,")
+                const ID = h1.innerText.replace("Server ID: ", "")
+                if(badwordsunsplit !== "none"){
+                    // Make a container element for the list
+                    listContainer = document.createElement('div')
+                    listContainer.classList.add("centerDiv")
+                    listContainer.appendChild(h1);
+                    // Make the list
+                    listElement = document.createElement('ul'),
+                    // Set up a loop that goes through the items in listItems one at a time
+                    numberOfListItems = badwords.length, listItem, i;
+
+                    // Add it to the page
+                    document.getElementsByTagName('body')[0].appendChild(listContainer);
+                    listContainer.appendChild(listElement);
+
+                    for (i = 0; i < numberOfListItems; ++i) {
+                        // create an item for each one
+                        listItem = document.createElement('li');
+
+                        // Add the item text
+                        listItem.innerHTML = badwords[i];
+
+                        // Add listItem to the listElement
+                        listElement.appendChild(listItem);
+                    }
+                } else {
+                    
+                    let pItem = document.createElement('p')
+                    pItem.innerHTML = "It looks like this guild has no badwords, or is invalid"
+                    pItem.classList.add("red")
+                    pItem.classList.add("invalidguildstuff")
+                    document.getElementsByTagName('body')[0].appendChild(h1);
+                    document.getElementsByTagName('body')[0].appendChild(pItem);
+                }
+            }
+
+            // Usage
+            makeList();
+        </script>
+        <script>
+        </script>
+    </body>
+</html>

@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>Bad words confirmation</title>
+        <link rel="stylesheet" href="/scripts/style.css" type="text/css">
+        <link rel="icon" href="/images/favicon" type="image/png">
+    </head>
+    <body class="black">
+        <h1 class="centerText1">Are you sure you want to go to this page?</h1>
+        <h3 class="centerText1 red">This page will most likely contain offensive/harmful words.</h3>
+        <input type="button" value="I understand" onclick="redirect()" class="back"/>
+        <script>
+            function redirect(){
+                const url = window.location.href + "/confirmed"
+                window.location.href = url
+            }
+        </script>
+    </body>
+</html>
