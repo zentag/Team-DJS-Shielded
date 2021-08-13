@@ -86,6 +86,7 @@ module.exports = {
 
         })
     } else if(args[0] && args[0] == "badword") {
+        letbadwords = []
         const guildId = message.guild.id
         const filter = m => m.author.id === message.author.id
         const collector = new Discord.MessageCollector(message.channel, filter, {

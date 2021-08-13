@@ -8,14 +8,15 @@ require('dotenv').config()
 
 exports.client = client
 
-global._botVersion = "2.2"
+global._botVersion = "2.2.1"
 global._globalEmbedFooter = `Shielded v${_botVersion}`
 
+client.login(process.env.token)
 client.on('ready', () => {
     try{
       console.log('ready')
       startServer(client)
-      client.user.setActivity("<mention> help or <mention> prefix", { type: "PLAYING"})
+      client.user.setActivity("<mention> help or <mention> prefix", { type: "WATCHING"})
       init(client, {
         commandsDir: 'commands',
         featuresDir: 'features',
@@ -49,7 +50,7 @@ client.on('ready', () => {
       }
       })
       setTimeout(() => {
-        // sendConnectionLog(client)
+        sendConnectionLog(client)
       }, 3000)
       
     } catch(e) {
@@ -65,4 +66,4 @@ client.on('ready', () => {
 })
 
 
-client.login(process.env.token)
+
