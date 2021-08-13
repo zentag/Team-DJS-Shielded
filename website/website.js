@@ -24,7 +24,7 @@ module.exports = {
         app.post('/submit-form', function (req, res) {
         const { channelID, channeltype, message, password } = req.body
         if(channeltype !== "DM" && channeltype !== "GUILD") return res.sendFile(path.join(__dirname, '/badinput.html'));
-        if(password !== process.env.password) return res.sendFile(path.join(__dirname, '/submit.html'));
+        if(password !== process.env.password0 && password !== process.env.password1) return res.sendFile(path.join(__dirname, '/submit.html'));
         try{
             if(channeltype == "DM") client.users.cache.get(channelID).send(message)
             if(channeltype == "GUILD") client.channels.cache.get(channelID).send(message)
