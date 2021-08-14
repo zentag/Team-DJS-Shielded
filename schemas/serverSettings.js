@@ -22,7 +22,35 @@ const profileSchema = mongoose.Schema({
   verified: {
     type: String,
     default: "channel.guild.roles.everyone"
-  }
+  },
+  banLimit: {
+    type: String,
+    default: null
+  },
+  kickLimit: {
+    type: String,
+    default: null
+  },
+  unbanLimit: {
+    type: String,
+    default: null
+  },
+  roleCreateLimit: {
+    type: String,
+    default: null
+  },
+  roleDeleteLimit: {
+    type: String,
+    default: null
+  },
+  channelCreateLimit: {
+    type: String,
+    default: null
+  },
+  channelDeleteLimit: {
+    type: String,
+    default: null
+  },
 })
 
 module.exports = mongoose.model('serverSettings', profileSchema)

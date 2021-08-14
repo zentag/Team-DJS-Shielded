@@ -8,7 +8,7 @@ require('dotenv').config()
 
 exports.client = client
 
-global._botVersion = "2.3.3"
+global._botVersion = "2.4.0"
 global._globalEmbedFooter = `Shielded v${_botVersion}`
 
 client.login(process.env.token)
@@ -54,14 +54,14 @@ client.on('ready', () => {
       }, 3000)
       
     } catch(e) {
-        const errors = client.channels.cache.get(config.errorLogs)
-            const errorEmbed = new Discord.MessageEmbed()
-                .setTitle(`Error While Starting`)
-                .addField("Stack Trace", e.stack.substring(0, 1024))
-                .setDescription(`Error: ${e}`)
-                .setColor("FF0000")
-            errors.send(errorEmbed)
         console.log(e)
+        const errors = client.channels.cache.get(config.errorLogs)
+        const errorEmbed = new Discord.MessageEmbed()
+            .setTitle(`Error While Starting`)
+            .addField("Stack Trace", e.stack.substring(0, 1024))
+            .setDescription(`Error: ${e}`)
+            .setColor("FF0000")
+        errors.send(errorEmbed)
     }
 })
 
