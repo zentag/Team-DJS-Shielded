@@ -161,6 +161,7 @@ module.exports = {
       let roleCreateLimit
       let channelDeleteLimit
       let channelCreateLimit
+      let sendAntiNukeMessage
       const guildId = message.guild.id
       const filter = m => m.author.id === message.author.id
       const questions = [
@@ -171,6 +172,7 @@ module.exports = {
         "Max amount of role creations per minute? (-1 to disable)",
         "Max amount of channel deletes per minute? (-1 to disable)",
         "Max amount of channel creates per minute? (-1 to disable)",
+        "Who do I send anti-nuke notification DMs to? (respond with a mention[aka ping] or `default`)"
       ]
       const collector = new Discord.MessageCollector(message.channel, filter, {
         max: questions.length
@@ -178,7 +180,7 @@ module.exports = {
       let counter = 0
       message.channel.send(questions[0])
       collector.on('collect', m => {
-          if(isNaN(m.content)){
+          if(isNaN(m.content) && counter !== 7){
             m.reply("Invalid input, setup aborted! Must be a number.")
             collector.stop()
             return
@@ -232,6 +234,18 @@ module.exports = {
               channelCreateLimit = m.content
             }
           }
+          if(counter == 7){
+            let target = m.mentions.users.first();
+            if(!target && m.content !== "default"){
+              m.reply("Invalid Mention! Setup stopped.")
+              sendAntiNukeMessage = null
+              collector.stop()
+              return
+            }
+            sendAntiNukeMessage = target.id
+            if(m.content == "default") target = client.users.cache.get(guild.owner.id)
+            target.send("You have been picked as the anti-nuke notification reciever")
+          }
           m.react("✅")
           counter++
           if(questions[counter]) message.channel.send(questions[counter])
@@ -255,6 +269,7 @@ module.exports = {
                     roleCreateLimit: roleCreateLimit,
                     channelCreateLimit: channelCreateLimit,
                     channelDeleteLimit: channelDeleteLimit,
+                    sendAntiNukeMessage: sendAntiNukeMessage,
                 }
               },
               {

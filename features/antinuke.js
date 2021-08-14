@@ -24,6 +24,7 @@ module.exports = (client) => {
         banCounter[guild.id][name] = (banCounter[guild.id][name] || 0) + 1
     })
     client.on("guildBanRemove", async (guild, user) => {
+        console.log("test")
         const fetchedLogs = await guild.fetchAuditLogs({
             limit: 1,
             type: 'MEMBER_BAN_REMOVE',
@@ -38,7 +39,7 @@ module.exports = (client) => {
         unbanCounter[guild.id][name] = (unbanCounter[guild.id][name] || 0) + 1
     })
     client.on("guildMemberRemove", async (member) => {
-        const fetchedLogs = await guild.fetchAuditLogs({
+        const fetchedLogs = await member.guild.fetchAuditLogs({
             limit: 1,
             type: 'MEMBER_KICK',
         });
@@ -55,7 +56,7 @@ module.exports = (client) => {
     })
     client.on("channelDelete", async (channel) => {
         const guild = channel.guild
-        const fetchedLogs = await guild.fetchAuditLogs({
+        const fetchedLogs = await channel.guild.fetchAuditLogs({
             limit: 1,
             type: 'CHANNEL_DELETE',
         });
@@ -70,7 +71,7 @@ module.exports = (client) => {
     })
     client.on("channelCreate", async (channel) => {
         const guild = channel.guild
-        const fetchedLogs = await guild.fetchAuditLogs({
+        const fetchedLogs = await channel.guild.fetchAuditLogs({
             limit: 1,
             type: 'CHANNEL_CREATE',
         });
@@ -85,7 +86,7 @@ module.exports = (client) => {
     })
     client.on("roleCreate", async (role) => {
         const guild = role.guild
-        const fetchedLogs = await guild.fetchAuditLogs({
+        const fetchedLogs = await role.guild.fetchAuditLogs({
             limit: 1,
             type: 'ROLE_CREATE',
         });
@@ -100,7 +101,7 @@ module.exports = (client) => {
     })
     client.on("roleDelete", async (role) => {
         const guild = role.guild
-        const fetchedLogs = await guild.fetchAuditLogs({
+        const fetchedLogs = await role.guild.fetchAuditLogs({
             limit: 1,
             type: 'ROLE_DELETE',
         });
@@ -134,10 +135,10 @@ module.exports = (client) => {
                                     const user = client.users.cache.get(userID)
                                     const member = guild.members.cache.get(userID)
                                     if(!member.kickable){
-                                        client.users.cache.get(guild.owner.id).send(`I can't kick ${user.tag}! ${user.tag} surpassed the **BAN** limit and I cannot kick them. Try moving the "Shielded" role above their highest role`)
+                                        client.users.cache.get(docs.sendAntiNukeMessage || guild.owner.id).send(`I can't kick ${user.tag}! ${user.tag} surpassed the **BAN** limit and I cannot kick them. Try moving the "Shielded" role above their highest role`)
                                     } else {
                                         member.kick()
-                                        client.users.cache.get(guild.owner.id).send(`I've kicked ${user.tag} (${userID}) for surpassing the **BAN** limit`)
+                                        client.users.cache.get(docs.sendAntiNukeMessage || guild.owner.id).send(`I've kicked ${user.tag} (${userID}) for surpassing the **BAN** limit`)
                                     }
                                 }
                             }
@@ -153,10 +154,10 @@ module.exports = (client) => {
                                     const user = client.users.cache.get(userID)
                                     const member = guild.members.cache.get(userID)
                                     if(!member.kickable){
-                                        client.users.cache.get(guild.owner.id).send(`I can't kick ${user.tag}! ${user.tag} surpassed the **KICK** limit and I cannot kick them. Try moving the "Shielded" role above their highest role`)
+                                        client.users.cache.get(docs.sendAntiNukeMessage || guild.owner.id).send(`I can't kick ${user.tag}! ${user.tag} surpassed the **KICK** limit and I cannot kick them. Try moving the "Shielded" role above their highest role`)
                                     } else {
                                         member.kick()
-                                        client.users.cache.get(guild.owner.id).send(`I've kicked ${user.tag} (${userID}) for surpassing the **KICK** limit`)
+                                        client.users.cache.get(docs.sendAntiNukeMessage || guild.owner.id).send(`I've kicked ${user.tag} (${userID}) for surpassing the **KICK** limit`)
                                     }
                                 }
                             }
@@ -172,10 +173,10 @@ module.exports = (client) => {
                                     const user = client.users.cache.get(userID)
                                     const member = guild.members.cache.get(userID)
                                     if(!member.kickable){
-                                        client.users.cache.get(guild.owner.id).send(`I can't kick ${user.tag}! ${user.tag} surpassed the **UNBAN** limit and I cannot kick them. Try moving the "Shielded" role above their highest role`)
+                                        client.users.cache.get(docs.sendAntiNukeMessage || guild.owner.id).send(`I can't kick ${user.tag}! ${user.tag} surpassed the **UNBAN** limit and I cannot kick them. Try moving the "Shielded" role above their highest role`)
                                     } else {
                                         member.kick()
-                                        client.users.cache.get(guild.owner.id).send(`I've kicked ${user.tag} (${userID}) for surpassing the **UNBAN** limit`)
+                                        client.users.cache.get(docs.sendAntiNukeMessage || guild.owner.id).send(`I've kicked ${user.tag} (${userID}) for surpassing the **UNBAN** limit`)
                                     }
                                 }
                             }
@@ -191,10 +192,10 @@ module.exports = (client) => {
                                     const user = client.users.cache.get(userID)
                                     const member = guild.members.cache.get(userID)
                                     if(!member.kickable){
-                                        client.users.cache.get(guild.owner.id).send(`I can't kick ${user.tag}! ${user.tag} surpassed the **CHANNEL CREATE** limit and I cannot kick them. Try moving the "Shielded" role above their highest role`)
+                                        client.users.cache.get(docs.sendAntiNukeMessage || guild.owner.id).send(`I can't kick ${user.tag}! ${user.tag} surpassed the **CHANNEL CREATE** limit and I cannot kick them. Try moving the "Shielded" role above their highest role`)
                                     } else {
                                         member.kick()
-                                        client.users.cache.get(guild.owner.id).send(`I've kicked ${user.tag} (${userID}) for surpassing the **CHANNEL CREATE** limit`)
+                                        client.users.cache.get(docs.sendAntiNukeMessage || guild.owner.id).send(`I've kicked ${user.tag} (${userID}) for surpassing the **CHANNEL CREATE** limit`)
                                     }
                                 }
                             }
@@ -210,10 +211,10 @@ module.exports = (client) => {
                                     const user = client.users.cache.get(userID)
                                     const member = guild.members.cache.get(userID)
                                     if(!member.kickable){
-                                        client.users.cache.get(guild.owner.id).send(`I can't kick ${user.tag}! ${user.tag} surpassed the **CHANNEL DELETE** limit and I cannot kick them. Try moving the "Shielded" role above their highest role`)
+                                        client.users.cache.get(docs.sendAntiNukeMessage || guild.owner.id).send(`I can't kick ${user.tag}! ${user.tag} surpassed the **CHANNEL DELETE** limit and I cannot kick them. Try moving the "Shielded" role above their highest role`)
                                     } else {
                                         member.kick()
-                                        client.users.cache.get(guild.owner.id).send(`I've kicked ${user.tag} (${userID}) for surpassing the **CHANNEL DELETE** limit`)
+                                        client.users.cache.get(docs.sendAntiNukeMessage || guild.owner.id).send(`I've kicked ${user.tag} (${userID}) for surpassing the **CHANNEL DELETE** limit`)
                                     }
                                 }
                             }
@@ -229,10 +230,10 @@ module.exports = (client) => {
                                     const user = client.users.cache.get(userID)
                                     const member = guild.members.cache.get(userID)
                                     if(!member.kickable){
-                                        client.users.cache.get(guild.owner.id).send(`I can't kick ${user.tag}! ${user.tag} surpassed the **ROLE CREATE** limit and I cannot kick them. Try moving the "Shielded" role above their highest role`)
+                                        client.users.cache.get(docs.sendAntiNukeMessage || guild.owner.id).send(`I can't kick ${user.tag}! ${user.tag} surpassed the **ROLE CREATE** limit and I cannot kick them. Try moving the "Shielded" role above their highest role`)
                                     } else {
                                         member.kick()
-                                        client.users.cache.get(guild.owner.id).send(`I've kicked ${user.tag} (${userID}) for surpassing the **ROLE CREATE** limit`)
+                                        client.users.cache.get(docs.sendAntiNukeMessage || guild.owner.id).send(`I've kicked ${user.tag} (${userID}) for surpassing the **ROLE CREATE** limit`)
                                     }
                                 }
                             }
@@ -248,10 +249,10 @@ module.exports = (client) => {
                                     const user = client.users.cache.get(userID)
                                     const member = guild.members.cache.get(userID)
                                     if(!member.kickable){
-                                        client.users.cache.get(guild.owner.id).send(`I can't kick ${user.tag}! ${user.tag} surpassed the **ROLE DELETE** limit and I cannot kick them. Try moving the "Shielded" role above their highest role`)
+                                        client.users.cache.get(docs.sendAntiNukeMessage || guild.owner.id).send(`I can't kick ${user.tag}! ${user.tag} surpassed the **ROLE DELETE** limit and I cannot kick them. Try moving the "Shielded" role above their highest role`)
                                     } else {
                                         member.kick()
-                                        client.users.cache.get(guild.owner.id).send(`I've kicked ${user.tag} (${userID}) for surpassing the **ROLE DELETE** limit`)
+                                        client.users.cache.get(docs.sendAntiNukeMessage || guild.owner.id).send(`I've kicked ${user.tag} (${userID}) for surpassing the **ROLE DELETE** limit`)
                                     }
                                 }
                             }
@@ -262,5 +263,5 @@ module.exports = (client) => {
             })
             
         })
-    }, 15000)
+    }, 60000)
 }

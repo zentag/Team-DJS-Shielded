@@ -51,6 +51,10 @@ const profileSchema = mongoose.Schema({
     type: String,
     default: null
   },
+  sendAntiNukeMessage: {
+    type: String,
+    default: null,
+  }
 })
 
 module.exports = mongoose.model('serverSettings', profileSchema)
