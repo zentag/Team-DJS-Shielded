@@ -13,4 +13,4 @@ Run $setup to set up the bot.
 - [ ] Autodelete feature
 - [ ] Autoresponder feature
 - [ ] ID system for infractions
-- [ ] Anti-nuke feature
+- [x] Anti-nuke feature
