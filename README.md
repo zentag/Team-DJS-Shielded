@@ -14,3 +14,4 @@ Run $setup to set up the bot.
 - [ ] Autoresponder feature
 - [ ] ID system for infractions
 - [x] Anti-nuke feature
+- [ ] Mod log channel in $setup options
