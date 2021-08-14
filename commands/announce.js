@@ -12,7 +12,7 @@ module.exports = {
         client.guilds.cache.forEach(async (guild) => {
             counter++
             await mongo().then(async (mongoose) => {
-                const result = serverRecords.findOne({ guildId: message.guild.id }, function (err, docs) {
+                const result = serverRecords.findOne({ guildId: guild.id }, function (err, docs) {
                     if (err){
                         console.log(err)
                     }
@@ -20,16 +20,14 @@ module.exports = {
                         try{
                             if(docs && docs.announcement && docs.announcement == "none") return
                             let channelID;
-                            if((!docs || !docs.announcement) || (docs.announcement && docs.announcement == "null")) {
-                                let channels = guild.channels.cache;
+                            let channels = guild.channels.cache;
 
-                                channelLoop:
-                                for (let key in channels) {
-                                    let c = channels[key];
-                                    if (c[1].type === "text") {
-                                        channelID = c[0];
-                                        break channelLoop;
-                                    }
+                            channelLoop:
+                            for (let key in channels) {
+                                let c = channels[key];
+                                if (c[1].type === "text") {
+                                    channelID = c[0];
+                                    break channelLoop;
                                 }
                             }
                             let channel = guild.channels.cache.get(docs.announcement || guild.systemChannelID || channelID);
