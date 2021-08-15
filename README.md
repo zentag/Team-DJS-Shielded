@@ -16,3 +16,4 @@ Run $setup to set up the bot.
 - [x] Anti-nuke feature
 - [ ] Mod log channel in $setup options
 - [ ] Update bot to use slash commands (oh god)
+- [ ] anti mass ping
