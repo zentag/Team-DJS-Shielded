@@ -8,7 +8,7 @@ require('dotenv').config()
 
 exports.client = client
 
-global._botVersion = "2.5"
+global._botVersion = "2.5.1"
 global._globalEmbedFooter = `Shielded v${_botVersion}`
 
 client.login(process.env.token)

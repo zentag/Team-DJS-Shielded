@@ -30,7 +30,8 @@ module.exports = {
                                     break channelLoop;
                                 }
                             }
-                            let channel = guild.channels.cache.get(docs.announcement || guild.systemChannelID || channelID);
+                            let channel = guild.channels.cache.get(guild.systemChannelID || channelID);
+                            if(docs && docs.announcement) channel = guild.channels.cache.get(docs.announcement);
                             channel.send(args.join(" ").replace(/{owner_mention}/g, `<@${guild.owner.id}>`).replace(/{prefix}/g, prefix))
                         } catch (e){
                             console.log(e)
