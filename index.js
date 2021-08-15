@@ -16,7 +16,7 @@ client.on('ready', () => {
     try{
       console.log('ready')
       startServer(client)
-      client.user.setActivity("<mention> help or <mention> prefix", { type: "WATCHING"})
+      client.user.setActivity("<mention> help or <mention> prefix || <mention> invite", { type: "WATCHING"})
       init(client, {
         commandsDir: 'commands',
         featuresDir: 'features',
