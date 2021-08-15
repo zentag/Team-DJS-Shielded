@@ -10,8 +10,9 @@ Use the invite link [here](https://discord.com/api/oauth2/authorize?client_id=86
 Run $setup to set up the bot.  
 
 ### TODO:
-- [ ] Autodelete feature
+- [x] Autodelete feature
 - [x] Autoresponder feature
 - [ ] ID system for infractions
 - [x] Anti-nuke feature
 - [ ] Mod log channel in $setup options
+- [ ] Update bot to use slash commands (oh god)
