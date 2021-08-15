@@ -58,6 +58,10 @@ const profileSchema = mongoose.Schema({
   autoresponder: {
     type: Object,
     default: {}
+  },
+  autodelete: {
+    type: Array,
+    default: []
   }
 })
 

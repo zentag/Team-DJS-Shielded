@@ -282,10 +282,59 @@ module.exports = {
           }
         })
       })
+    } else if(args[0] && args[0] == "autodelete") {
+      let channelArray = []
+      const guildId = message.guild.id
+      const filter = m => m.author.id === message.author.id
+      const collector = new Discord.MessageCollector(message.channel, filter, {
+        max: 50
+      })
+      message.channel.send("Hello, welcome to the autodelete add-er! Type a channel that you want messages to be deleted from (with the #), then send it. Keep doing this until you are done, then send `done`")
+      collector.on('collect', m => {
+        if(m.content == "done"){
+            message.channel.send("Finished!")
+            collector.stop()
+        } else {
+            const channelID = m.content.replace('<#', "").replace(">", "")
+            const channel = client.channels.cache.get(channelID)
+            if(!channel)  return m.reply("Invalid channel! Don't worry, we won't add this one, and you can keep going.")
+            if(channelArray.indexOf(channelID) == -1){
+                channelArray.push(channelID)
+            }
+        }
+        m.react("✅")
+      })
+      collector.on('end', async collected => {
+          for(const channelID of channelArray){
+            const channel = client.channels.cache.get(channelID)
+            channel.send(`This channel has been set to an autodelete channel. Every message here will be deleted.\n*Didn't want this? Run ${prefix}setup autodelete again!*`)
+          }
+          await mongo().then(async (mongoose) => {
+              try {
+                const result = await serverSettings.findOneAndUpdate(
+                  {
+                    guildId
+                  },
+                  {
+                    guildId,
+                    $set: {
+                        autodelete: channelArray
+                    }
+                  },
+                  {
+                    upsert: true,
+                    new: true,
+                  }
+                )
+              } finally {
+                
+              }
+            })
+      })
     } else {
         const embed = new Discord.MessageEmbed()
           .setTitle("Setup Help")
-          .setDescription("Setup commands: \n ```$setup badword```\n ```$setup options```\n ```$setup antinuke```")
+          .setDescription("Setup commands: \n ```$setup badword```\n ```$setup options```\n ```$setup antinuke```\n```$setup autodelete```")
           .setFooter(_globalEmbedFooter)
         message.channel.send(embed)
     }
