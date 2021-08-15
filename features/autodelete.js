@@ -10,6 +10,7 @@ module.exports = (client) => {
                     console.log(err)
                 }
                 else{
+                  if(!docs) return
                     if(docs.autodelete.includes(message.channel.id)){
                         message.delete()
                     }

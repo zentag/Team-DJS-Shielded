@@ -6,6 +6,7 @@ module.exports = {
     minArgs: 0,
     maxArgs: -1,
     description: "Manage Autoresponder. Use the command without arguments for help",
+    permissions: ['ADMINISTRATOR'],
     callback: async ({ message, args, prefix }) => {
         const { guild, content } = message
         const guildId = guild.id
@@ -17,10 +18,13 @@ module.exports = {
                             console.log(err)
                         }
                         else{
-                            let newObj = docs.autoresponder
                             let highest = 0
-                            for(const property in docs.autoresponder){
-                                if(property > highest) highest = parseInt(property, 10)
+                            let newObj = {}
+                            if(docs && docs.autoresponder){
+                              newObj = docs.autoresponder 
+                              for(const property in docs.autoresponder){
+                                  if(property > highest) highest = parseInt(property, 10)
+                              }
                             }
                             const newnumber = highest + 1
                             args.shift()
@@ -111,6 +115,7 @@ module.exports = {
                             console.log(err)
                         }
                         else{
+                            if(!docs || !docs.autoresponder) return message.reply("No autoresponder set up!")
                             let { autoresponder } = docs
                             const embed = new Discord.MessageEmbed()
                                 .setTitle("Autoresponder View")

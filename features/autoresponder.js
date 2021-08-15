@@ -3,6 +3,7 @@ const mongo = require("../mongo.js")
 
 module.exports = (client) => {
     client.on("message", async (message) => {
+      if(message.channel.type == "DM" || message.author.bot) return
         const { guild, content } = message
         await mongo().then(async (mongoose) => {
             const result = serverRecords.findOne({ guildId: guild.id }, function (err, docs) {
