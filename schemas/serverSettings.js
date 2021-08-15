@@ -54,6 +54,10 @@ const profileSchema = mongoose.Schema({
   sendAntiNukeMessage: {
     type: String,
     default: null,
+  },
+  autoresponder: {
+    type: Object,
+    default: {}
   }
 })
 
