@@ -35,10 +35,11 @@ module.exports = {
                 } else {
                     return next();
                 }
-            } else
+            } else {
                 return next();
             }
-        });
+            }
+        );
         
         httpsserver.listen(port, () => console.log(`Example httpsserver listening at https://${_website}:${port}`));
         
