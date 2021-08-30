@@ -22,10 +22,23 @@ module.exports = {
           }, app);
         
         app.get('/', (req, res) => res.sendFile(path.join(__dirname, '/index.html')));
+        app.get('/', (req, res) => res.sendFile(path.join(__dirname, '/index.html')));
         app.get('/bad', (req, res) => res.sendFile(path.join(__dirname, '/badinput.html')));
         app.get('/submit', (req, res) => res.sendFile(path.join(__dirname, '/submit.html')));
         app.get('/scripts/style.css', (req, res) => res.sendFile(path.join(__dirname, '/style.css')));
         app.get('/images/favicon', (req, res) => res.sendFile(path.join(__dirname, '/favicon.png')));
+
+        app.use((req, res, next) => {
+            if (process.env.NODE_ENV === 'production') {
+                if (req.headers['x-forwarded-proto'] !== 'https'){
+                    return res.redirect('https://' + req.headers.host + req.url);
+                } else {
+                    return next();
+                }
+            } else
+                return next();
+            }
+        });
         
         httpsserver.listen(port, () => console.log(`Example httpsserver listening at https://${_website}:${port}`));
         
