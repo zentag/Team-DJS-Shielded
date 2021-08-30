@@ -20,6 +20,7 @@ module.exports = {
             cert: fs.readFileSync('/etc/letsencrypt/live/shielded.ddns.net/fullchain.pem'),
             ca: fs.readFileSync('/etc/letsencrypt/live/shielded.ddns.net/chain.pem', 'utf8')
           }, app);
+        const httpserver = http.createServer(app)
         
         app.get('/', (req, res) => res.sendFile(path.join(__dirname, '/index.html')));
         app.get('/', (req, res) => res.sendFile(path.join(__dirname, '/index.html')));
@@ -29,7 +30,6 @@ module.exports = {
         app.get('/images/favicon', (req, res) => res.sendFile(path.join(__dirname, '/favicon.png')));
 
         app.use((req, res, next) => {
-            console.log(req.headers['x-forwarded-proto'])
             if (req.headers['x-forwarded-proto'] !== 'https'){
                 return res.redirect('https://' + req.headers.host + req.url);
             } else {
@@ -38,6 +38,7 @@ module.exports = {
         });
         
         httpsserver.listen(port, () => console.log(`Example httpsserver listening at https://${_website}:${port}`));
+        httpserver.listen(80)
         
         app.use(express.urlencoded({ extended: false }));
         app.use(express.static(path.join(__dirname, 'public')));
