@@ -4,6 +4,8 @@ const serverSettings = require('../schemas/serverSettings.js')
 module.exports = {
     startServer: (client) => {
         const express = require('express');
+        const https = require('https');
+        const fs = require('fs');
         const app = express();
         const port = 80;
         const path = require('path')
@@ -12,21 +14,26 @@ module.exports = {
             windowMs: 15 * 60 * 1000, // 15 minutes
             max: 50 // limit each IP to 100 requests per windowMs
         });
+        const httpsserver = https.createServer({
+            key: fs.readFileSync('/etc/letsencrypt/live/shielded.ddns.net/privkey.pem'),
+            cert: fs.readFileSync('/etc/letsencrypt/live/shielded.ddns.net/fullchain.pem'),
+          }, app);
         
-        app.get('/', (req, res) => res.sendFile(path.join(__dirname, '/index.html')));
-        app.get('/bad', (req, res) => res.sendFile(path.join(__dirname, '/badinput.html')));
-        app.get('/submit', (req, res) => res.sendFile(path.join(__dirname, '/submit.html')));
-        app.get('/scripts/style.css', (req, res) => res.sendFile(path.join(__dirname, '/style.css')));
-        app.get('/images/favicon', (req, res) => res.sendFile(path.join(__dirname, '/favicon.png')));
+        httpsserver.get('/', (req, res) => res.sendFile(path.join(__dirname, '/index.html')));
+        httpsserver.get('/bad', (req, res) => res.sendFile(path.join(__dirname, '/badinput.html')));
+        httpsserver.get('/submit', (req, res) => res.sendFile(path.join(__dirname, '/submit.html')));
+        httpsserver.get('/scripts/style.css', (req, res) => res.sendFile(path.join(__dirname, '/style.css')));
+        httpsserver.get('/images/favicon', (req, res) => res.sendFile(path.join(__dirname, '/favicon.png')));
+        httpsserver.get('/.well-known/acme-challenge/VO81sqfImFl0gSRwbGMJKgphuzUjcq_rvg0xerNqhyo')
         
-        app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
+        httpsserver.listen(port, () => console.log(`Example httpsserver listening at http://localhost:${port}`));
         
-        app.use(express.urlencoded({ extended: false }));
-        app.use(express.static(path.join(__dirname, 'public')));
-        app.use(limiter);
-        app.engine('html', require('ejs').renderFile);
+        httpsserver.use(express.urlencoded({ extended: false }));
+        httpsserver.use(express.static(path.join(__dirname, 'public')));
+        httpsserver.use(limiter);
+        httpsserver.engine('html', require('ejs').renderFile);
         
-        app.post('/submit-form', function (req, res) {
+        httpsserver.post('/submit-form', function (req, res) {
         const { channelID, channeltype, message, password } = req.body
         if(channeltype !== "DM" && channeltype !== "GUILD") return res.sendFile(path.join(__dirname, '/badinput.html'));
         if(password !== process.env.password0 && password !== process.env.password1) return res.sendFile(path.join(__dirname, '/submit.html'));
@@ -39,7 +46,7 @@ module.exports = {
         res.sendFile(path.join(__dirname, '/submit.html'));
         });
 
-        app.get('/servers/:id/badwords/confirmed', (req, res) => {
+        httpsserver.get('/servers/:id/badwords/confirmed', (req, res) => {
             let badwords = "none"
             mongo().then(async (mongoose) => {
                 const result = serverSettings.findOne({ guildId: req.params.id }, function (err, docs) {
@@ -55,7 +62,7 @@ module.exports = {
                 });
             })
         });
-        app.get('/servers/:id/badwords/', (req, res) => {
+        httpsserver.get('/servers/:id/badwords/', (req, res) => {
             res.sendFile(path.join(__dirname, '/confirmbadwords.html'))
         });
     }
