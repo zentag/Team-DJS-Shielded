@@ -5,6 +5,7 @@ module.exports = {
     startServer: (client) => {
         const express = require('express');
         const https = require('https');
+        const http = require('http');
         const fs = require('fs');
         const app = express();
         const port = 443;
@@ -19,14 +20,17 @@ module.exports = {
             cert: fs.readFileSync('/etc/letsencrypt/live/shielded.ddns.net/fullchain.pem'),
             ca: fs.readFileSync('/etc/letsencrypt/live/shielded.ddns.net/chain.pem', 'utf8')
           }, app);
+        const httpserver = http.createServer(app);
         
         app.get('/', (req, res) => res.sendFile(path.join(__dirname, '/index.html')));
         app.get('/bad', (req, res) => res.sendFile(path.join(__dirname, '/badinput.html')));
         app.get('/submit', (req, res) => res.sendFile(path.join(__dirname, '/submit.html')));
         app.get('/scripts/style.css', (req, res) => res.sendFile(path.join(__dirname, '/style.css')));
         app.get('/images/favicon', (req, res) => res.sendFile(path.join(__dirname, '/favicon.png')));
+        app.get()
         
         httpsserver.listen(port, () => console.log(`Example httpsserver listening at http://localhost:${port}`));
+        httpserver.listen(80, () => {console.log('HTTP Server running on port 80');});
         
         app.use(express.urlencoded({ extended: false }));
         app.use(express.static(path.join(__dirname, 'public')));
