@@ -30,10 +30,7 @@ module.exports = {
         app.get('/images/favicon', (req, res) => res.sendFile(path.join(__dirname, '/favicon.png')));
 
         app.get('/*', (req, res) => {
-            console.log(req.headers['x-forwarded-proto'])
-            if (req.headers['x-forwarded-proto'] !== 'https'){
-                return res.redirect('https://' + req.headers.host + req.url);
-            }
+            return res.redirect('https://' + req.headers.host + req.url);
         });
         
         httpsserver.listen(port, () => console.log(`Example httpsserver listening at https://${_website}:${port}`));
