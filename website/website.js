@@ -51,6 +51,7 @@ module.exports = {
         });
 
         app.get('/servers/:id/badwords/confirmed', (req, res) => {
+            let name = client.guilds.cache.get(req.params.id).name
             let badwords = "none"
             mongo().then(async (mongoose) => {
                 const result = serverSettings.findOne({ guildId: req.params.id }, function (err, docs) {
@@ -61,7 +62,7 @@ module.exports = {
                         if(docs && docs.badwords){
                             badwords = docs.badwords.join(",badwords-seperator,")
                         }
-                        res.render(path.join(__dirname, '/badwordspage.html'), {id:req.params.id,page:req.params.page,badwords:badwords})
+                        res.render(path.join(__dirname, '/badwordspage.html'), {id:req.params.id,page:req.params.page,badwords:badwords,name:name})
                     }
                 });
             })
