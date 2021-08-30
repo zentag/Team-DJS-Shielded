@@ -29,7 +29,7 @@ module.exports = {
         app.get('/scripts/style.css', (req, res) => res.sendFile(path.join(__dirname, '/style.css')));
         app.get('/images/favicon', (req, res) => res.sendFile(path.join(__dirname, '/favicon.png')));
 
-        app.get('/*', (req, res) => {
+        app.all('*', (req, res) => {
             console.log("hello")
             return res.redirect('https://' + req.headers.host + req.url);
         });
