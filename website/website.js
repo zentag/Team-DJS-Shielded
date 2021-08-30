@@ -30,6 +30,7 @@ module.exports = {
         app.get('/images/favicon', (req, res) => res.sendFile(path.join(__dirname, '/favicon.png')));
 
         app.use((req, res, next) => {
+            console.log(req.headers['x-forwarded-proto'])
             if (req.headers['x-forwarded-proto'] !== 'https'){
                 return res.redirect('https://' + req.headers.host + req.url);
             } else {
