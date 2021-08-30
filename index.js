@@ -10,6 +10,7 @@ exports.client = client
 
 global._botVersion = "2.6.1"
 global._globalEmbedFooter = `Shielded v${_botVersion}`
+global._website = "shielded.ddns.net"
 
 client.login(process.env.token)
 client.on('ready', () => {

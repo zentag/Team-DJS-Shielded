@@ -20,7 +20,6 @@ module.exports = {
             cert: fs.readFileSync('/etc/letsencrypt/live/shielded.ddns.net/fullchain.pem'),
             ca: fs.readFileSync('/etc/letsencrypt/live/shielded.ddns.net/chain.pem', 'utf8')
           }, app);
-        const httpserver = http.createServer(app);
         
         app.get('/', (req, res) => res.sendFile(path.join(__dirname, '/index.html')));
         app.get('/bad', (req, res) => res.sendFile(path.join(__dirname, '/badinput.html')));
@@ -28,8 +27,7 @@ module.exports = {
         app.get('/scripts/style.css', (req, res) => res.sendFile(path.join(__dirname, '/style.css')));
         app.get('/images/favicon', (req, res) => res.sendFile(path.join(__dirname, '/favicon.png')));
         
-        httpsserver.listen(port, () => console.log(`Example httpsserver listening at http://localhost:${port}`));
-        httpserver.listen(80, () => {console.log('HTTP Server running on port 80');});
+        httpsserver.listen(port, () => console.log(`Example httpsserver listening at https://${_website}:${port}`));
         
         app.use(express.urlencoded({ extended: false }));
         app.use(express.static(path.join(__dirname, 'public')));
