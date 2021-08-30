@@ -28,11 +28,6 @@ module.exports = {
         app.get('/submit', (req, res) => res.sendFile(path.join(__dirname, '/submit.html')));
         app.get('/scripts/style.css', (req, res) => res.sendFile(path.join(__dirname, '/style.css')));
         app.get('/images/favicon', (req, res) => res.sendFile(path.join(__dirname, '/favicon.png')));
-
-        app.all('*', (req, res) => {
-            console.log("hello")
-            return res.redirect('https://' + req.headers.host + req.url);
-        });
         
         httpsserver.listen(port, () => console.log(`Example httpsserver listening at https://${_website}:${port}`));
         httpserver.listen(80)
