@@ -27,7 +27,6 @@ module.exports = {
         app.get('/submit', (req, res) => res.sendFile(path.join(__dirname, '/submit.html')));
         app.get('/scripts/style.css', (req, res) => res.sendFile(path.join(__dirname, '/style.css')));
         app.get('/images/favicon', (req, res) => res.sendFile(path.join(__dirname, '/favicon.png')));
-        app.get()
         
         httpsserver.listen(port, () => console.log(`Example httpsserver listening at http://localhost:${port}`));
         httpserver.listen(80, () => {console.log('HTTP Server running on port 80');});
