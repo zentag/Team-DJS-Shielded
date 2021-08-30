@@ -17,6 +17,7 @@ module.exports = {
         const httpsserver = https.createServer({
             key: fs.readFileSync('/etc/letsencrypt/live/shielded.ddns.net/privkey.pem'),
             cert: fs.readFileSync('/etc/letsencrypt/live/shielded.ddns.net/fullchain.pem'),
+            ca: fs.readFileSync('/etc/letsencrypt/live/shielded.ddns.net/chain.pem', 'utf8')
           }, app);
         
         httpsserver.get('/', (req, res) => res.sendFile(path.join(__dirname, '/index.html')));
