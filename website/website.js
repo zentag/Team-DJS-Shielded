@@ -26,7 +26,7 @@ module.exports = {
         // httpsserver.get('/scripts/style.css', (req, res) => res.sendFile(path.join(__dirname, '/style.css')));
         // httpsserver.get('/images/favicon', (req, res) => res.sendFile(path.join(__dirname, '/favicon.png')));
         
-        httpsserver.listen(port, () => console.log(`Example httpsserver listening at http://localhost:${port}`));
+        app.listen(port, () => console.log(`Example httpsserver listening at http://localhost:${port}`));
         
         // httpsserver.use(express.urlencoded({ extended: false }));
         // httpsserver.use(express.static(path.join(__dirname, 'public')));
