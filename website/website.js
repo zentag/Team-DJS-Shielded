@@ -24,7 +24,7 @@ module.exports = {
         httpsserver.get('/submit', (req, res) => res.sendFile(path.join(__dirname, '/submit.html')));
         httpsserver.get('/scripts/style.css', (req, res) => res.sendFile(path.join(__dirname, '/style.css')));
         httpsserver.get('/images/favicon', (req, res) => res.sendFile(path.join(__dirname, '/favicon.png')));
-        httpsserver.get('/.well-known/acme-challenge/VO81sqfImFl0gSRwbGMJKgphuzUjcq_rvg0xerNqhyo')
+        httpsserver.get('/.well-known/acme-challenge/VO81sqfImFl0gSRwbGMJKgphuzUjcq_rvg0xerNqhyo', (req, res) => res.sendFile(path.join(__dirname, '/VO81sqfImFl0gSRwbGMJKgphuzUjcq_rvg0xerNqhyo')))
         
         httpsserver.listen(port, () => console.log(`Example httpsserver listening at http://localhost:${port}`));
         
