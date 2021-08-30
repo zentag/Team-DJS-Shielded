@@ -7,7 +7,7 @@ module.exports = {
         const https = require('https');
         const fs = require('fs');
         const app = express();
-        const port = 80;
+        const port = 443;
         const path = require('path')
         const rateLimit = require("express-rate-limit");
         const limiter = rateLimit({
@@ -25,7 +25,7 @@ module.exports = {
         httpsserver.get('/scripts/style.css', (req, res) => res.sendFile(path.join(__dirname, '/style.css')));
         httpsserver.get('/images/favicon', (req, res) => res.sendFile(path.join(__dirname, '/favicon.png')));
         
-        app.listen(port, () => console.log(`Example httpsserver listening at http://localhost:${port}`));
+        httpsserver.listen(port, () => console.log(`Example httpsserver listening at http://localhost:${port}`));
         
         httpsserver.use(express.urlencoded({ extended: false }));
         httpsserver.use(express.static(path.join(__dirname, 'public')));
