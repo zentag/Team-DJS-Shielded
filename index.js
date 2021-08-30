@@ -8,7 +8,7 @@ require('dotenv').config()
 
 exports.client = client
 
-global._botVersion = "2.6.2"
+global._botVersion = "2.6.3"
 global._globalEmbedFooter = `Shielded v${_botVersion}`
 global._website = "shielded.ddns.net"
 

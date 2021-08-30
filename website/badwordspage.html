@@ -11,8 +11,9 @@
                 let listItem
                 const h1 = document.createElement("h1")
                 h1.classList.add("badwordsh1")
-                h1.innerHTML = "Censored Words For Server ID: <%= id %>"
+                h1.innerHTML = "Censored Words For Server: <%= name %>(<%= id %>)"
                 const badwordsunsplit = '<%= badwords %>'
+                const name = '<%= name %>'
                 const badwords = badwordsunsplit.split(",badwords-seperator,")
                 const ID = h1.innerText.replace("Server ID: ", "")
                 if(badwordsunsplit !== "none" && badwords !== [""] && badwordsunsplit !== ""){
