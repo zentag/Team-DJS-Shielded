@@ -8,7 +8,7 @@ module.exports = {
         const http = require('http');
         const fs = require('fs');
         const app = express();
-        const port = 80;
+        const port = 443;
         const path = require('path')
         const rateLimit = require("express-rate-limit");
         const limiter = rateLimit({
@@ -29,16 +29,15 @@ module.exports = {
         app.get('/scripts/style.css', (req, res) => res.sendFile(path.join(__dirname, '/style.css')));
         app.get('/images/favicon', (req, res) => res.sendFile(path.join(__dirname, '/favicon.png')));
 
-        app.use((req, res, next) => {
+        app.get('/*', (req, res) => {
             console.log(req.headers['x-forwarded-proto'])
             if (req.headers['x-forwarded-proto'] !== 'https'){
                 return res.redirect('https://' + req.headers.host + req.url);
-            } else {
-                return next();
             }
         });
         
         httpsserver.listen(port, () => console.log(`Example httpsserver listening at https://${_website}:${port}`));
+        httpserver.listen(80)
         
         app.use(express.urlencoded({ extended: false }));
         app.use(express.static(path.join(__dirname, 'public')));
