@@ -8,7 +8,7 @@ module.exports = {
         const http = require('http');
         const fs = require('fs');
         const app = express();
-        const port = 443;
+        const port = 8080;
         const path = require('path')
         const rateLimit = require("express-rate-limit");
         const limiter = rateLimit({
@@ -39,7 +39,6 @@ module.exports = {
         });
         
         httpsserver.listen(port, () => console.log(`Example httpsserver listening at https://${_website}:${port}`));
-        httpserver.listen(80)
         
         app.use(express.urlencoded({ extended: false }));
         app.use(express.static(path.join(__dirname, 'public')));
