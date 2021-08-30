@@ -29,17 +29,12 @@ module.exports = {
         app.get('/images/favicon', (req, res) => res.sendFile(path.join(__dirname, '/favicon.png')));
 
         app.use((req, res, next) => {
-            if (process.env.NODE_ENV === 'production') {
-                if (req.headers['x-forwarded-proto'] !== 'https'){
-                    return res.redirect('https://' + req.headers.host + req.url);
-                } else {
-                    return next();
-                }
+            if (req.headers['x-forwarded-proto'] !== 'https'){
+                return res.redirect('https://' + req.headers.host + req.url);
             } else {
                 return next();
             }
-            }
-        );
+        });
         
         httpsserver.listen(port, () => console.log(`Example httpsserver listening at https://${_website}:${port}`));
         
